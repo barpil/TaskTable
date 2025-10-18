@@ -1,0 +1,13 @@
+spring:
+  application.name: TaskTableApp
+  datasource:
+    url: jdbc:postgresql://localhost:5433/tasktablemtab
+    username: user
+    password: password
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  #Baza nie jest modyfikowana i przystosowywana do kodu
+    hibernate.ddl-auto: none
+
+logging.level:
+  root: INFO

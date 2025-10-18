@@ -1,0 +1,14 @@
+services:
+  db:
+    image: ttappostgres
+    container_name: tta_db
+    volumes:
+      - TaskTableMTAB:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tasktablemtab
+    ports:
+      - "5433:5432"
+volumes:
+  TaskTableMTAB:
