@@ -23,16 +23,6 @@ public class UsersService {
     public UsersService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
-
-        logger.info(registerUser("JohnSnow", "mail@123", "kartofle").toString());
-        logger.info(registerUser("JohnSnow", "inny@123", "kartofle").toString());
-        logger.info(registerUser("Inny", "mail@123", "kartofle").toString());
-        logger.info(loginUser("nieistniejacy@123", "kartofle").toString());
-        logger.info(loginUser("mail@123", "zle").toString());
-        logger.info(loginUser("mail@123", "kartofle").toString());
-
-
-        System.out.println(this.userRepository.findAll());
     }
 
     public UserRegisterStatus registerUser(String username, String email, String password){
@@ -40,6 +30,7 @@ public class UsersService {
         if(!conflictingUsers.isEmpty()){
             if(conflictingUsers.size()>1){
                 logger.error("There might be error with database as multiple users with same username/email exist!");
+                return UserRegisterStatus.UNEXPECTED_REGISTER_ERROR;
             }
             Users conflictingUser = conflictingUsers.getFirst();
             if(conflictingUser.getEmail().equals(email)){
@@ -60,8 +51,8 @@ public class UsersService {
         }
     }
 
-    public UserLoginStatus loginUser(String login, String password){
-        Optional<Users> optUser = userRepository.getUserByEmail(login);
+    public UserLoginStatus loginUser(String email, String password){
+        Optional<Users> optUser = userRepository.getUserByEmail(email);
         if(optUser.isEmpty()) return UserLoginStatus.UNKNOWN_USER;
         if(checkUserCredentials(password, optUser.get().getHashedPassword())){
             return UserLoginStatus.LOGIN_SUCCESSFUL;

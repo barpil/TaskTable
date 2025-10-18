@@ -1,5 +1,5 @@
 # Baza postgres
-FROM postgres:18
-#Te informacje explicit podane bo to i tak aplikacja pogladowa
-# Ewentualnie potem dodac skrypt sql inicjujacy baze danych przy utworzeniu kontenera
+FROM postgres:17
 EXPOSE 5432
+# Skrypty inicjalizacyjne dla bazy, przy tworzeniu nowego konenera
+COPY ./sql/database_init.sql /docker-entrypoint-initdb.d/

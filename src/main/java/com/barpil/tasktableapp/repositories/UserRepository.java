@@ -43,4 +43,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             WHERE email = :email
     """, nativeQuery = true)
     int removeUser(String email);
+
+    List<Users> findByName(String username);
 }
