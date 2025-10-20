@@ -1,19 +1,44 @@
 package com.barpil.tasktableapp.security;
 
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+
+    private final String secretSignKey = "jakisKluczDoUstawieniaPotemWKonfiguracji"; //Bedzie do zmiany bo to powinno byc sekretne
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
+        return authConfig.getAuthenticationManager();
+    }
+
 
     // Tymczasowe przepuszczanie wszystkich zapytan na api. Dopoki nie zrobie frontendu
     @Bean
@@ -21,8 +46,11 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated()
                 )
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(Customizer.withDefaults()))
                 .cors(Customizer.withDefaults());
 
         return http.build();
@@ -34,10 +62,33 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Twój frontend
         configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true); // jeśli używasz ciasteczek lub tokenów
-
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtEncoder jwtEncoder(){
+        SecretKeySpec secretKey = getSecretSignKey();
+        return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder(){
+        SecretKeySpec secretKey = getSecretSignKey();
+        return NimbusJwtDecoder.withSecretKey(secretKey).build();
+    }
+
+    private SecretKeySpec getSecretSignKey(){
+        //Tutaj uzywam symetrycznego klucza HMAC, ale potem moge dostosowac do RSA, tylko to wiecej roboty
+        return new SecretKeySpec(secretSignKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+    }
+
+
 }

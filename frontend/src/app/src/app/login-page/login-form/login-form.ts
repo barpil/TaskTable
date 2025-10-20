@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {NgIf} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'login-form',
@@ -13,15 +14,17 @@ import {NgIf} from '@angular/common';
   styleUrl: './login-form.css'
 })
 export class LoginForm {
+  private readonly router: Router;
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+    this.router=router;
   }
 
   onSubmit() {
@@ -31,10 +34,10 @@ export class LoginForm {
     this.errorMessage = '';
 
 
-    this.http.post('http://localhost:8080/api/auth/login', this.loginForm.value, {observe: 'response'}).subscribe({
-      next: (response) => {
+    this.http.post('http://localhost:8080/api/auth/login', this.loginForm.value, {withCredentials: true}).subscribe({
+      next: () => {
         this.isLoading = false;
-        globalThis.alert('Zalogowano pomyślnie: '+ (response.body?.toString() ?? 'empty body')+' status: '+response.status)
+        this.router.navigate(['/main-page'])
       },
       error: (error) => {
         this.errorMessage = 'Niepoprawny email lub hasło';
