@@ -1,6 +1,7 @@
 spring:
   application.name: TaskTableApp
   datasource:
+    #url: jdbc:postgresql://db:5432/tasktablemtab <- taki adres żeby działał w kontenerze
     url: jdbc:postgresql://localhost:5433/tasktablemtab
     username: user
     password: password

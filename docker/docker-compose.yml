@@ -1,6 +1,8 @@
 services:
   db:
-    build: ./db
+    build:
+      context: ../db/
+      dockerfile: Dockerfile
     image: ttappostgres
     container_name: tta_db
     volumes:
@@ -11,3 +13,26 @@ services:
       POSTGRES_DB: tasktablemtab
     ports:
       - "5433:5432"
+
+  frontend:
+    build:
+      context: ../frontend/
+      dockerfile: Dockerfile
+    image: ttapfrontend
+    container_name: tta_frontend
+    ports:
+      - "4200:8080"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ../backend/
+      dockerfile: Dockerfile
+    image: ttapbackend
+    container_name: tta_backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+

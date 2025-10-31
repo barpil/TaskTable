@@ -53,7 +53,6 @@ public class AuthorizationController {
 
         return ResponseEntity.ok(new LoginResponse(UsersService.UserLoginStatus.LOGIN_SUCCESSFUL.name()));
     }
-    //NIE WIEM DLACZEGO ALE LOGOUT NIE KASUJE CIASTECZKA
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("jwt", "");
