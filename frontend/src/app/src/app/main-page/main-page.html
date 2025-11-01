@@ -1,2 +1,6 @@
-<p>main-page works!</p>
+@if (userInfo) {
+  <h1>Witaj, {{ this.userInfo["username"] }}</h1>
+} @else {
+  <p>Ładowanie danych użytkownika...</p>
+}
 <logout-btn></logout-btn>

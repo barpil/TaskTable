@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -68,6 +69,12 @@ public class UsersService {
         }
     }
 
+    public Map<String, String> getUserInformation(String email){
+        Optional<Users> userOpt = userRepository.getUserByEmail(email);
+        if(userOpt.isEmpty()) return Map.of();
+        Users user = userOpt.get();
+        return Map.of("username", user.getName(), "email", user.getEmail());
+    }
 
     private String getHashedPassword(String unhashedPassword){
         return passwordEncoder.encode(unhashedPassword);

@@ -6,7 +6,6 @@ import com.barpil.tasktableapp.controllers.rest.dto.RegisterRequest;
 import com.barpil.tasktableapp.controllers.rest.dto.RegisterResponse;
 import com.barpil.tasktableapp.security.services.JwtTokenService;
 import com.barpil.tasktableapp.services.UsersService;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -66,7 +64,7 @@ public class AuthorizationController {
 
     @GetMapping("/validate")
     public ResponseEntity<?> validate(@CookieValue(value = "jwt", required = false) String token) {
-        if (token != null && jwtTokenService.validateToken(token)) {
+        if (isTokenValid(token)) {
             return ResponseEntity.ok(Map.of("authenticated", true));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -84,5 +82,18 @@ public class AuthorizationController {
             case USERNAME_ALREADY_IN_USE, EMAIL_ALREADY_IN_USE -> ResponseEntity.status(HttpStatus.CONFLICT).body(new RegisterResponse(status.name()));
             default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         };
+    }
+
+    @GetMapping("/whoami")
+    public ResponseEntity<?> getLoggedUsername(@CookieValue(value = "jwt") String token){
+        if(isTokenValid(token)){
+            Map<String, String> userInfoMap = usersService.getUserInformation(jwtTokenService.getLoggedUsersEmail(token));
+            return userInfoMap.isEmpty() ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(userInfoMap);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    private boolean isTokenValid(String token){
+        return (token != null && jwtTokenService.validateToken(token));
     }
 }

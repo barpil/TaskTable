@@ -40,4 +40,8 @@ public class JwtTokenService {
             return false;
         }
     }
+
+    public String getLoggedUsersEmail(String token){
+        return decoder.decode(token).getSubject();
+    }
 }

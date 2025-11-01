@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Router, RouterLink} from '@angular/router';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'login-form',
@@ -33,7 +34,7 @@ export class LoginForm {
     this.errorMessage = '';
 
 
-    this.http.post('http://localhost:8080/api/auth/login', this.loginForm.value, {withCredentials: true}).subscribe({
+    this.http.post(environment.apiUrl+'/auth/login', this.loginForm.value, {withCredentials: true}).subscribe({
       next: () => {
         this.isLoading = false;
         this.router.navigate(['/main-page'])

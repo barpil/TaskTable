@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'logout-btn',
@@ -17,7 +18,7 @@ export class LogoutBtn {
   }
 
   logoutUser(){
-    this.http.post('http://localhost:8080/api/auth/logout', {}, {withCredentials: true}).subscribe({
+    this.http.post(environment.apiUrl+'/auth/logout', {}, {withCredentials: true}).subscribe({
       next: () => {
         this.router.navigate([''])
       },

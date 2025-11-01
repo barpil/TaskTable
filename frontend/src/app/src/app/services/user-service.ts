@@ -1,0 +1,37 @@
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environments/environment';
+import {catchError, Observable, of, tap} from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private userInfo: Record<string, string> | null = null;
+  private isUserLogged = false;
+  constructor(private readonly http: HttpClient) {}
+
+
+  private fetchUserInfo(): Observable<Record<string, string> | null>{
+    return this.http.get<Record<string, string>>(environment.apiUrl+'/auth/whoami', {withCredentials: true}).pipe(
+      tap(response => {
+        this.userInfo = response;
+        this.isUserLogged = true;
+      }),
+      catchError(err => {
+        this.isUserLogged = false;
+        this.userInfo = null;
+        return of(null);
+      })
+    );
+  }
+
+  getLoggedUserInfo(): Observable<Record<string, string> | null>{
+    //TA TUTAJ "PAMIEC" NIE DZIALA BO SIE ZAWSZE RESETUJE PO PRZELADOWANIU STRONY
+    if(this.isUserLogged) return of(this.userInfo);
+    else{
+      //ZAWSZE SIE TEN ELSE WYWOLUJE. POCZYTAJ JAK TO ZROBIC Z localStorage+BehavioralSubject
+      return this.fetchUserInfo();
+    }
+  }
+}
