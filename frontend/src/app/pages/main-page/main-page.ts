@@ -1,6 +1,6 @@
 import {Component, inject, input} from '@angular/core';
-import {LogoutBtn} from '../common-components/logout-btn/logout-btn';
 import {ActivatedRoute} from '@angular/router';
+import {LogoutBtn} from '../../common-components/logout-btn/logout-btn';
 
 @Component({
   selector: 'app-main-page',

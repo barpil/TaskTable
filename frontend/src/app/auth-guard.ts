@@ -2,7 +2,7 @@ import {CanActivateFn, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {inject} from '@angular/core';
 import {catchError, map, of} from 'rxjs';
-import {environment} from '../../../environments/environment';
+import {environment} from '../environments/environment';
 
 export const AuthGuard: CanActivateFn = (route, state) => {
   const http = inject(HttpClient);

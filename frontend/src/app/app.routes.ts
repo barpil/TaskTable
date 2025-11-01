@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import {WelcomePage} from './src/app/welcome-page/welcome-page';
-import {LoginPage} from './src/app/login-page/login-page';
-import {MainPage} from './src/app/main-page/main-page';
-import {AuthGuard} from './src/app/auth-guard';
-import {RegisterPage} from './src/app/register-page/register-page';
-import {ErrorPage} from './src/app/error-page/error-page';
-import {UserResolver} from './src/app/resolvers/user-resolver-resolver';
+import {WelcomePage} from './pages/welcome-page/welcome-page';
+import {ErrorPage} from './pages/error-page/error-page';
+import {LoginPage} from './pages/login-page/login-page';
+import {RegisterPage} from './pages/register-page/register-page';
+import {MainPage} from './pages/main-page/main-page';
+import {AuthGuard} from './auth-guard';
+import {UserResolver} from './resolvers/user-resolver-resolver';
+
 
 export const routes: Routes = [
   {path: '', component: WelcomePage},
