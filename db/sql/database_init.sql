@@ -36,7 +36,7 @@ CREATE TABLE tasks(
 CREATE TABLE team_members(
 	user_id INTEGER REFERENCES users (id),
 	team_id INTEGER REFERENCES teams (team_id),
-	join_date TIMESTAMP DEFAULT NOW(),
+	join_date TIMESTAMP NOT NULL DEFAULT NOW(),
 	PRIMARY KEY (user_id, team_id)
 );
 

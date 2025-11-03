@@ -1,10 +1,9 @@
 package com.barpil.tasktableapp.repositories.entities;
 
+import com.barpil.tasktableapp.repositories.entities.complexids.TaskAssignationsId;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "task_assignations")
@@ -25,24 +24,5 @@ public class TaskAssignations {
     @Column(name = "assigned_date")
     private LocalDateTime assigned_date = LocalDateTime.now();
 
-
-    @Embeddable
-    static class TaskAssignationsId implements Serializable {
-        @Column(name = "user_id")
-        private long userId;
-        @Column(name = "task_id")
-        private long taskId;
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            TaskAssignationsId that = (TaskAssignationsId) o;
-            return userId == that.userId && taskId == that.taskId;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(userId, taskId);
-        }
-    }
 }
+
