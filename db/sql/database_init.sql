@@ -11,7 +11,8 @@ CREATE TABLE users (
 CREATE TABLE teams (
 	team_id SERIAL PRIMARY KEY,
 	team_name VARCHAR(100) NOT NULL,
-	description VARCHAR(500)
+	description VARCHAR(500),
+    owner_id INTEGER REFERENCES users (id)
 );
 
 -- Projects table
@@ -19,6 +20,7 @@ CREATE TABLE projects(
 	project_id SERIAL PRIMARY KEY,
 	project_name VARCHAR(100) NOT NULL,
 	description VARCHAR(500),
+    owner_id INTEGER REFERENCES users (id),
 	project_state VARCHAR(11) NOT NULL CHECK (project_state IN ('DONE', 'IN PROGRESS')) DEFAULT 'IN PROGRESS'
 );
 

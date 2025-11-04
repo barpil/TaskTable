@@ -26,6 +26,10 @@ public class Teams {
     @Column(name = "description", length = 500, nullable = true)
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
+    private Users owner;
+
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TeamMembers> members = new HashSet<>();
 
@@ -44,6 +48,7 @@ public class Teams {
 
     public static Teams createTeam(Users teamOwner, String teamName, String teamDescription){
         Teams createdTeam = new Teams(teamName, teamDescription);
+        createdTeam.setOwner(teamOwner);
         createdTeam.addMember(teamOwner);
         return createdTeam;
     }

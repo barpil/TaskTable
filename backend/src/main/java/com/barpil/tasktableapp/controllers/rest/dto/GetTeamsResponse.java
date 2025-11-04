@@ -4,6 +4,7 @@ import com.barpil.tasktableapp.repositories.entities.TeamMembers;
 import com.barpil.tasktableapp.repositories.entities.Teams;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,21 +24,28 @@ public class GetTeamsResponse {
     }
 
     @Data
-    @JsonPropertyOrder({ "team_id", "name", "description", "join_date" })
+    @JsonPropertyOrder({ "team", "join_date" })
     static class TeamAndJoinDate {
-        @JsonProperty("team_id")
-        private Long teamId;
-        @JsonProperty("name")
-        private String teamName;
-        private String description;
+        private TeamInfo team;
         @JsonProperty("join_date")
         private LocalDateTime joinDate;
 
         TeamAndJoinDate(Teams team, LocalDateTime joinDate) {
-            this.teamId = team.getId();
-            this.teamName = team.getName();
-            this.description = team.getDescription();
+            this.team = new TeamInfo(team.getId(), team.getName(), team.getDescription(), team.getOwner().getEmail());
             this.joinDate = joinDate;
+        }
+
+        @Data
+        @JsonPropertyOrder({ "team_id", "name", "description", "owner" })
+        @AllArgsConstructor
+        static class TeamInfo{
+            @JsonProperty("team_id")
+            private Long teamId;
+            @JsonProperty("name")
+            private String teamName;
+            private String description;
+            private String owner;
+
         }
     }
 }
