@@ -27,6 +27,11 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     """)
     Optional<Users> getUserByEmail(String email);
 
+    @Query("""
+    SELECT u FROM Users u WHERE u.email IN (:emailList)
+    """)
+    List<Users> getUsersByEmail(List<String> emailList);
+
     @Modifying
     @Transactional
     @Query(value = """

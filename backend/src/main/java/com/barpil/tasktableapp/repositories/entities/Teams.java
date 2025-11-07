@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,6 +45,12 @@ public class Teams {
     public void addMember(Users user){
         TeamMembers newMember = new TeamMembers(user, this);
         this.members.add(newMember);
+    }
+
+    public void addMembers(List<Users> usersToAdd){
+        usersToAdd.forEach(user -> {
+            this.members.add(new TeamMembers(user, this));
+        });
     }
 
     public static Teams createTeam(Users teamOwner, String teamName, String teamDescription){

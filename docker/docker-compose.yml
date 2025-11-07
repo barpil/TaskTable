@@ -6,7 +6,7 @@ services:
     image: ttappostgres
     container_name: tta_db
     volumes:
-      - /var/lib/postgresql/data
+      - mtab-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -36,3 +36,5 @@ services:
     depends_on:
       - db
 
+volumes:
+  mtab-data:

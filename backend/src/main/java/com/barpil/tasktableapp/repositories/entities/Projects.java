@@ -26,6 +26,7 @@ public class Projects {
     private String description;
 
     @Column(name = "project_state", length = 11)
+    @Enumerated(EnumType.STRING)
     private ProjectState state;
 
     @ManyToOne
@@ -51,19 +52,9 @@ public class Projects {
         return projects;
     }
 
-    enum ProjectState{
-        DONE("DONE"),
-        IN_PROGRESS("IN PROGRESS");
-
-        private final String value;
-
-        ProjectState(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return value;
-        }
+    enum ProjectState {
+        DONE,
+        IN_PROGRESS
     }
+
 }

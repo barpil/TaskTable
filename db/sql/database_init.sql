@@ -21,7 +21,7 @@ CREATE TABLE projects(
 	project_name VARCHAR(100) NOT NULL,
 	description VARCHAR(500),
     owner_id INTEGER REFERENCES users (id),
-	project_state VARCHAR(11) NOT NULL CHECK (project_state IN ('DONE', 'IN PROGRESS')) DEFAULT 'IN PROGRESS'
+	project_state VARCHAR(11) NOT NULL CHECK (project_state IN ('DONE', 'IN_PROGRESS')) DEFAULT 'IN_PROGRESS'
 );
 
 
@@ -31,7 +31,7 @@ CREATE TABLE tasks(
 	project_id INTEGER REFERENCES projects (project_id),
 	task_name VARCHAR(255) NOT NULL,
 	description TEXT,
-	task_state VARCHAR(11) NOT NULL CHECK (task_state IN ('TO DO', 'IN PROGRESS', 'DONE')) DEFAULT 'IN PROGRESS'
+	task_state VARCHAR(11) NOT NULL CHECK (task_state IN ('TO_DO', 'IN_PROGRESS', 'DONE')) DEFAULT 'IN_PROGRESS'
  );
 
 -- Users in teams joining table
