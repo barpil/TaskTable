@@ -6,6 +6,7 @@ import {RegisterPage} from './pages/register-page/register-page';
 import {MainPage} from './pages/main-page/main-page';
 import {AuthGuard} from './auth-guard';
 import {UserResolver} from './resolvers/user-resolver-resolver';
+import {ProjectPage} from './pages/project-page/project-page';
 
 
 export const routes: Routes = [
@@ -17,5 +18,6 @@ export const routes: Routes = [
     resolve: {
       userInfo: UserResolver
     }},
+  {path: 'project-page/:teamId', component: ProjectPage, canActivate: [AuthGuard]},
   {path: '**', redirectTo: ''}
 ];

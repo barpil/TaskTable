@@ -1,0 +1,13 @@
+@if (joinedTeams) {
+  @if(joinedTeams.length!=0){
+    <div class="teams">
+      @for(joinedTeam of joinedTeams; track joinedTeam.team.team_id){
+        <team-tile [teamAndJoinDate]="joinedTeam" (teamClicked)="handleClickedTeam($event)"></team-tile>
+      }
+    </div>
+  } @else {
+    <p>Team list is empty</p>
+  }
+} @else {
+  <loading-animation/>
+}
