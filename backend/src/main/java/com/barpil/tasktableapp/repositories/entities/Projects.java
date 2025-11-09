@@ -1,5 +1,6 @@
 package com.barpil.tasktableapp.repositories.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class Projects {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
+    @JsonIgnore
     private Set<Teams> participantTeams = new HashSet<>();
 
 

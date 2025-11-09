@@ -5,6 +5,7 @@ import com.barpil.tasktableapp.repositories.TaskAssignationsRepository;
 import com.barpil.tasktableapp.repositories.TasksRepository;
 import com.barpil.tasktableapp.repositories.UserRepository;
 import com.barpil.tasktableapp.repositories.entities.Projects;
+import com.barpil.tasktableapp.repositories.entities.TaskAssignations;
 import com.barpil.tasktableapp.repositories.entities.Tasks;
 import com.barpil.tasktableapp.repositories.entities.Users;
 import jakarta.transaction.Transactional;
@@ -18,14 +19,12 @@ import java.util.List;
 public class TaskService {
 
     private final TasksRepository tasksRepository;
-    private final TaskAssignationsRepository taskAssignationsRepository;
     private final ProjectsRepository projectsRepository;
     private final UserRepository userRepository;
 
     @Autowired
     public TaskService(TasksRepository tasksRepository, TaskAssignationsRepository taskAssignationsRepository, ProjectsRepository projectsRepository, UserRepository userRepository) {
         this.tasksRepository = tasksRepository;
-        this.taskAssignationsRepository = taskAssignationsRepository;
         this.projectsRepository = projectsRepository;
         this.userRepository = userRepository;
     }
@@ -41,6 +40,13 @@ public class TaskService {
         tasksRepository.save(task);
     }
 
+    public void updateTask(Long taskId, String taskName, String description){
+        Tasks task = tasksRepository.findById(taskId).orElseThrow(() -> new RuntimeException("PODANY TASK NIE ISTNIEJE"));
+        task.setName(taskName);
+        task.setDescription(description);
+        tasksRepository.save(task);
+    }
+
     public void removeTask(Long taskId){
         Tasks taskToRemove = tasksRepository.findById(taskId).orElseThrow(() -> new RuntimeException("PODANY TASK NIE ISTNIEJE"));
         tasksRepository.delete(taskToRemove);
@@ -48,12 +54,13 @@ public class TaskService {
 
     public void updateUsersAssignToTask(Long taskId, List<String> userEmailList){
         if(userEmailList.isEmpty()) throw new RuntimeException("CANNOT ADD EMPTY LIST OF USERS TO TASK");
-        Tasks task = tasksRepository.findById(taskId).orElseThrow(() -> new RuntimeException("TASK with taskId DOES NOT EXIST"));
+        Tasks task = tasksRepository.findById(taskId).orElseThrow(() -> new RuntimeException("TASK WITH taskId DOES NOT EXIST"));
         List<Users> usersToAdd = userRepository.getUsersByEmail(userEmailList);
         if(userEmailList.size()!=usersToAdd.size()) throw new RuntimeException("AT LEAST ONE OF SPECIFIED USERS DOES NOT EXIST");
         task.assignUsers(usersToAdd);
         tasksRepository.save(task);
     }
+
 
     public void changeTaskState(Long taskId, Tasks.TaskState state){
         Tasks task = tasksRepository.findById(taskId).orElseThrow(() -> new RuntimeException("TASK WITH taskId DOES NOT EXIST"));

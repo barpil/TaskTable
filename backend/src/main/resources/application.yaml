@@ -1,5 +1,5 @@
 spring:
-  profiles.active: dev
+  profiles.active: dev  # prod/dev  zabezpieczona/niezabezpieczona
   application.name: TaskTableApp
   datasource:
     #url: jdbc:postgresql://db:5432/tasktablemtab <- taki adres żeby działał w kontenerze

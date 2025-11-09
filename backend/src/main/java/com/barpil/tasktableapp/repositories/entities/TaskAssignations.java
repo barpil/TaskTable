@@ -2,12 +2,14 @@ package com.barpil.tasktableapp.repositories.entities;
 
 import com.barpil.tasktableapp.repositories.entities.complexids.TaskAssignationsId;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@Getter
 @Table(name = "task_assignations")
 public class TaskAssignations {
     @EmbeddedId

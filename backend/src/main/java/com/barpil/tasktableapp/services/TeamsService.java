@@ -40,13 +40,19 @@ public class TeamsService {
         return teamMembersRepository.getTeamsOfUserByEmail(email, sort);
     }
 
+    public List<Users> getUsersInTeam(Long teamId){
+        return teamsRepository.findById(teamId).orElseThrow(() -> new RuntimeException("PODANY TEAM NIE ISTNIEJE")).getMembers()
+                .stream().map(TeamMembers::getUser).toList();
+    }
+
     public void createTeam(String creatorsEmail, String teamsName, String teamsDescription){
         Users teamOwner = getUserByEmail(creatorsEmail);
         Teams createdTeam = Teams.createTeam(teamOwner, teamsName, teamsDescription);
         teamsRepository.save(createdTeam);
     }
 
-    public void removeUserFromTeam(String removedUsersEmail, Teams team){
+    public void removeUserFromTeam(String removedUsersEmail, Long teamId){
+        Teams team = teamsRepository.findById(teamId).orElseThrow(() -> new RuntimeException("PODANY TEAM NIE ISTNIEJE"));
         Users removedUser = getUserByEmail(removedUsersEmail);
         if(team.getMembers().size()<=1){
             teamsRepository.delete(team);
@@ -58,6 +64,17 @@ public class TeamsService {
                                 () -> logger.error("User ({}:{}) is not a part of specified team ({}:{}).",
                                             removedUser.getName(), removedUsersEmail, team.getId(), team.getName())
                         );
+    }
+
+    public void addUserToTeam(String addedUsersEmail, Long teamId){
+        Teams team = teamsRepository.findById(teamId).orElseThrow(() -> new RuntimeException("PODANY TEAM NIE ISTNIEJE"));
+        Users addedUser = getUserByEmail(addedUsersEmail);
+        teamMembersRepository.getTeamMembersByUserAndTeam(addedUser, team)
+                .ifPresentOrElse(
+                        teamMember -> logger.error("User ({}:{}) is already a part of specified team ({}:{}).",
+                                addedUser.getName(), addedUsersEmail, team.getId(), team.getName()),
+                        () -> teamMembersRepository.save(new TeamMembers(addedUser, team))
+                );
     }
 
     private Users getUserByEmail(String email){

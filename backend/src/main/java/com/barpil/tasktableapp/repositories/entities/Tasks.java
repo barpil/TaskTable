@@ -1,5 +1,6 @@
 package com.barpil.tasktableapp.repositories.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,8 @@ public class Tasks {
     @Enumerated(EnumType.STRING)
     private TaskState state;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<TaskAssignations> assignedUsers = new HashSet<>();
 
     public enum TaskState{
@@ -57,10 +59,18 @@ public class Tasks {
     }
 
     public void assignUsers(List<Users> usersToAdd){
-        this.assignedUsers = new HashSet<>();
-        usersToAdd.forEach( user -> {
-            this.assignedUsers.add(new TaskAssignations(user, this));
+        this.assignedUsers.clear();
+        usersToAdd.forEach(user -> {
+            TaskAssignations assignment = new TaskAssignations(user, this);
+            this.assignedUsers.add(assignment);
         });
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

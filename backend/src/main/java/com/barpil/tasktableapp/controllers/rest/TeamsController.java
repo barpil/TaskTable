@@ -1,8 +1,11 @@
 package com.barpil.tasktableapp.controllers.rest;
 
+import com.barpil.tasktableapp.controllers.rest.dto.AddUserToTeamRequest;
 import com.barpil.tasktableapp.controllers.rest.dto.CreateTeamRequest;
 import com.barpil.tasktableapp.controllers.rest.dto.GetTeamsResponse;
+import com.barpil.tasktableapp.controllers.rest.dto.GetUsersInTeamResponse;
 import com.barpil.tasktableapp.repositories.entities.Teams;
+import com.barpil.tasktableapp.repositories.entities.Users;
 import com.barpil.tasktableapp.security.services.JwtTokenService;
 import com.barpil.tasktableapp.services.TeamsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,25 @@ public class TeamsController {
         @RequestBody CreateTeamRequest request){
         String email = jwtTokenService.getLoggedUsersEmail(token);
         teamsService.createTeam(email, request.getTeamName(), request.getTeamDescription());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{teamId}")
+    public ResponseEntity<?> getUsersInTeam(@PathVariable("teamId") Long teamId){
+        return ResponseEntity.ok(new GetUsersInTeamResponse(teamsService.getUsersInTeam(teamId)));
+    }
+
+    @PostMapping("/{teamId}")
+    public ResponseEntity<?> addUserToTeam(@PathVariable("teamId") Long teamId,
+                                           @RequestBody AddUserToTeamRequest request){
+        teamsService.addUserToTeam(request.getAddedUsersEmail(), teamId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<?> removeUserFromTeam(@PathVariable("teamId") Long teamId,
+                                           @RequestBody AddUserToTeamRequest request){
+        teamsService.removeUserFromTeam(request.getAddedUsersEmail(), teamId);
         return ResponseEntity.ok().build();
     }
 }

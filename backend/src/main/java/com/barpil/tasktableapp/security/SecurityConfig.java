@@ -4,6 +4,7 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import jakarta.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -38,9 +39,8 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-
-    // Tymczasowe przepuszczanie wszystkich zapytan na api. Dopoki nie zrobie frontendu
     @Bean
+    @Profile("prod")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -51,6 +51,19 @@ public class SecurityConfig {
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .bearerTokenResolver(cookieTokenResolver())
                         .jwt(Customizer.withDefaults()))
+                .cors(Customizer.withDefaults());
+
+        return http.build();
+    }
+
+    @Bean
+    @Profile("dev")
+    public SecurityFilterChain securityFilterChainDisabledAuthenticationForDevelopment(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                )
                 .cors(Customizer.withDefaults());
 
         return http.build();
