@@ -1,0 +1,21 @@
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+.back-btn::before {
+  content: '←';
+  margin-right: 8px;
+}

@@ -1,4 +1,4 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {LogoutBtn} from '../../common-components/logout-btn/logout-btn';
 import {TeamList} from './team-list/team-list';
@@ -12,7 +12,7 @@ import {TeamList} from './team-list/team-list';
   templateUrl: './main-page.html',
   styleUrl: './main-page.css'
 })
-export class MainPage {
+export class MainPage implements OnInit{
     private readonly activatedRoute = inject(ActivatedRoute);
     userInfo!: Record<string, string>;
     ngOnInit(){

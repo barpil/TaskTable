@@ -28,6 +28,6 @@ export class TeamList implements OnInit{
   //BĘDĘ MUSIAŁ ZABEZPIECZYĆ ŻEBY JEŻELI UŻYTKOWNIK NIE JEST W TEAMIE TO NIE MOGL PRZEJSC NA STRONE TEAMU
 
   handleClickedTeam($event: Team) {
-    this.router.navigate(['/project-page', $event.team_id]);
+    this.router.navigate(['/teams', $event.team_id]);
   }
 }

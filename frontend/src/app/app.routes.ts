@@ -7,6 +7,7 @@ import {MainPage} from './pages/main-page/main-page';
 import {AuthGuard} from './auth-guard';
 import {UserResolver} from './resolvers/user-resolver-resolver';
 import {ProjectPage} from './pages/project-page/project-page';
+import {TaskPage} from './pages/task-page/task-page';
 
 
 export const routes: Routes = [
@@ -18,6 +19,7 @@ export const routes: Routes = [
     resolve: {
       userInfo: UserResolver
     }},
-  {path: 'project-page/:teamId', component: ProjectPage, canActivate: [AuthGuard]},
+  {path: 'teams/:teamId', component: ProjectPage, canActivate: [AuthGuard]},
+  {path: 'teams/:teamId/projects/:projectId', component: TaskPage, canActivate: [AuthGuard]},
   {path: '**', redirectTo: ''}
 ];
