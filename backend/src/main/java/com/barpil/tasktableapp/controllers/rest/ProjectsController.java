@@ -2,12 +2,15 @@ package com.barpil.tasktableapp.controllers.rest;
 
 import com.barpil.tasktableapp.controllers.rest.dto.AddTeamToProjectRequest;
 import com.barpil.tasktableapp.controllers.rest.dto.CreateProjectRequest;
+import com.barpil.tasktableapp.controllers.rest.dto.UserNameEmailDTO;
 import com.barpil.tasktableapp.security.services.JwtTokenService;
 import com.barpil.tasktableapp.services.ProjectsService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -45,6 +48,13 @@ public class ProjectsController {
     public ResponseEntity<?> deleteProject(@CookieValue(name = "jwt") String token, @PathVariable("project_id") Long projectId){
         projectsService.deleteProject(jwtTokenService.getLoggedUsersEmail(token), projectId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{project_id}/users")
+    public ResponseEntity<?> getUsersInProject(@PathVariable("project_id") Long projectId){
+        List<UserNameEmailDTO> responseBody = projectsService.getUsersInProject(projectId).stream()
+                .map(UserNameEmailDTO::new).toList();
+        return ResponseEntity.ok(responseBody);
     }
 
 

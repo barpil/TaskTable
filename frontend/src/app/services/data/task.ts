@@ -1,3 +1,5 @@
+import {User} from './user';
+
 export interface Tasks{
   tasks: Task[];
 }
@@ -8,10 +10,7 @@ export interface Task {
   name: string;
   description: string;
   state: "TO_DO" | "IN_PROGRESS" | "DONE";
-  assigned_users: AssignedUser[];
+  assigned_users: User[];
 }
 
-export interface AssignedUser {
-  username: string;
-  email: string;
-}
+

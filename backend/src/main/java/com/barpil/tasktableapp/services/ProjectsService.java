@@ -5,6 +5,7 @@ import com.barpil.tasktableapp.repositories.ProjectsRepository;
 import com.barpil.tasktableapp.repositories.TeamsRepository;
 import com.barpil.tasktableapp.repositories.entities.Projects;
 import com.barpil.tasktableapp.repositories.entities.Teams;
+import com.barpil.tasktableapp.repositories.entities.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -65,5 +66,10 @@ public class ProjectsService {
         Projects project = projectsRepository.findById(projectId).orElseThrow(() -> new RuntimeException("PROJEKT DO USUNIECIA NIE ISTNIEJE"));
         if(!project.getOwner().getEmail().equals(userEmail)) throw new RuntimeException("TYLKO WLASCICIEL MOZE USUNAC PROJEKT");
         return project;
+    }
+
+    public List<Users> getUsersInProject(Long projectId){
+        if(!projectsRepository.existsById(projectId)) throw new RuntimeException("PROJEKT NIE ISTNIEJE");
+        return projectsRepository.getUsersInProject(projectId);
     }
 }

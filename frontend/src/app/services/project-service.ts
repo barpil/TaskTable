@@ -3,6 +3,7 @@ import {BehaviorSubject, catchError, Observable, of, shareReplay} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Project} from './data/project';
+import {User} from './data/user';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class ProjectService {
       .subscribe(data => this.projectSubject.next(data));
   }
 
+  getUsersInProject(projectId: number): User[]{
+    return []
+  }
+
 
 
   constructor(private readonly http: HttpClient) {
@@ -25,3 +30,5 @@ export class ProjectService {
 
 
 }
+
+

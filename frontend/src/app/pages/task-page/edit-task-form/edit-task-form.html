@@ -1,0 +1,38 @@
+<div class="edit-task-container">
+  <h2>Edytuj task</h2>
+
+  <form [formGroup]="updateTaskForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input id="task-name" formControlName="name"/>
+      @if(updateTaskForm.get('name')?.invalid && updateTaskForm.get('name')?.touched){
+        <div class="error">
+          Nazwa nie może być pusta!
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="task-description"  formControlName="description" rows="5"></textarea>
+    </div>
+
+    <mat-form-field class="assignationsDD">
+      <mat-label>Przypisani użytkownicy</mat-label>
+      <mat-select formControlName="assignedUsers" multiple [compareWith]="compareUsers">
+
+        @for(user of usersInProject; track user.email){
+          <mat-option [value]="user">
+            {{user.username}}
+          </mat-option>
+        }
+
+      </mat-select>
+    </mat-form-field>
+
+    <button type="submit">Zapisz task</button>
+  </form>
+  @if(errorMessage){
+    <p class="error">{{ errorMessage }}</p>
+  }
+</div>
