@@ -17,7 +17,10 @@
       <textarea id="task-description"  formControlName="description" placeholder="Podaj opis taska" rows="5"></textarea>
     </div>
 
-    <button type="submit">Dodaj task</button>
+    <div class="dialog-actions">
+      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
+      <button type="submit">Dodaj task</button>
+    </div>
   </form>
   @if(errorMessage){
     <p class="error">{{ errorMessage }}</p>

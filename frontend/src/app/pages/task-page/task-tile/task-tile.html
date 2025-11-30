@@ -1,13 +1,8 @@
-<article class="task-tile">
-  <h3>{{taskObject.name}}</h3>
-  <p>{{taskObject.description}}</p>
-  <label for="state-select">State:</label>
-  <select id="state-select" [value]="humanReadableState" (change)="onStateChange($event)">
-    <option value="To Do">To Do</option>
-    <option value="In Progress">In Progress</option>
-    <option value="Done">Done</option>
-  </select>
-  <small>Assigned: {{assignedUsersUsernames}}</small>
-  <button (click)="openTaskEditModal()">Edit</button>
+<article class="task-tile" (dblclick)="openTaskDetailsModal()">
+  <h4 class="task-title">{{taskObject.name}}</h4>
+  <div class="task-footer">
+    <small class="assigned-count">
+      <span class="icon">👥</span> {{taskObject.assigned_users.length}} assigned
+    </small>
+  </div>
 </article>
-

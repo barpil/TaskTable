@@ -5,11 +5,10 @@ import {DIALOG_DATA, DialogRef} from '@angular/cdk/dialog';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
 import {Task} from '../../../services/data/task';
-import {MatCheckbox} from '@angular/material/checkbox';
 import {UserNameEmail} from '../../../services/data/user';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {forkJoin, switchMap} from 'rxjs';
+import {forkJoin} from 'rxjs';
 
 
 @Component({
@@ -20,8 +19,7 @@ import {forkJoin, switchMap} from 'rxjs';
     MatFormField,
     MatLabel,
     MatSelect,
-    MatOption,
-    MatCheckbox
+    MatOption
   ],
   templateUrl: './edit-task-form.html',
   styleUrl: './edit-task-form.css'
@@ -29,7 +27,10 @@ import {forkJoin, switchMap} from 'rxjs';
 export class EditTaskForm implements OnInit{
   task: Task;
   projectId: number;
+
   usersInProject: UserNameEmail[] = [];
+  filteredUsers: UserNameEmail[] = [];
+
   updateTaskForm: FormGroup;
   errorMessage = '';
   private readonly taskService = inject(TaskService);
@@ -48,6 +49,7 @@ export class EditTaskForm implements OnInit{
     this.http.get<UserNameEmail[]>(environment.apiUrl+'/projects/'+this.projectId+'/users', {withCredentials: true}).subscribe({
       next: (data) => {
         this.usersInProject = data;
+        this.filteredUsers = data;
       },
       error: () => {
         console.log("Nie udało się dostać listy userów w projekcie.")
@@ -55,12 +57,38 @@ export class EditTaskForm implements OnInit{
     })
   }
 
+  filterUsers(value: string): void {
+    const filterValue = value.toLowerCase();
+
+    const matchingUsers = this.usersInProject.filter(user =>
+      user.username.toLowerCase().includes(filterValue) || user.email.toLowerCase().includes(filterValue)
+    );
+
+    const selectedUsers: UserNameEmail[] = this.updateTaskForm.get('assignedUsers')?.value || [];
+
+    const combinedMap = new Map<string, UserNameEmail>();
+
+    matchingUsers.forEach(user => combinedMap.set(user.email, user));
+
+    selectedUsers.forEach(user => {
+      if (!combinedMap.has(user.email)) {
+        combinedMap.set(user.email, user);
+      }
+    });
+
+
+    this.filteredUsers = Array.from(combinedMap.values());
+  }
+
   onSubmit(){
     if(this.updateTaskForm.invalid) return;
     this.errorMessage = '';
 
-    const userAssignationsWereChanged = !(this.task.assigned_users.length === this.updateTaskForm.value.assignedUsers.length
-      && this.task.assigned_users.every(val => this.updateTaskForm.value.assignedUsers.includes(val)));
+    const currentAssignedUsers = this.task.assigned_users.map(u => u.email).sort();
+    const newAssignedUsers = this.updateTaskForm.value.assignedUsers.map((u: UserNameEmail) => u.email).sort();
+
+    const userAssignationsWereChanged = JSON.stringify(currentAssignedUsers) !== JSON.stringify(newAssignedUsers);
+
     const nameOrDescriptionWereChanged = !(this.task.name === this.updateTaskForm.value.name && this.task.description === this.updateTaskForm.value.description)
     const requestTable = []
 
@@ -74,14 +102,21 @@ export class EditTaskForm implements OnInit{
       let assignUsersRequest = this.http.post(environment.apiUrl+'/tasks/'+this.task.id+'/assignations', assignUsersRequestBody, {withCredentials: true});
       requestTable.push(assignUsersRequest)
     }
+
+    if(requestTable.length === 0) {
+      this.closeModal();
+      return;
+    }
+
     forkJoin(requestTable).subscribe({
       next: () => {
-        if(requestTable.length>0) this.taskService.loadTasks(this.projectId);
+        this.taskService.loadTasks(this.projectId);
         this.closeModal();
       },
       error: (error) => {
         this.errorMessage = "Błąd updatowania"
-        console.log((error.body?.toString() ?? 'empty body')+' status: '+error.status)
+        const errorBody = error.error?.toString() ?? 'empty body';
+        console.log(`Błąd: ${errorBody} status: ${error.status}`);
       }
     })
   }
@@ -92,7 +127,7 @@ export class EditTaskForm implements OnInit{
 
 
   compareUsers(user1: UserNameEmail, user2: UserNameEmail): boolean{
-    return user1.email === user2.email;
+    return user1 && user2 ? user1.email === user2.email : user1 === user2;
   }
 
 }

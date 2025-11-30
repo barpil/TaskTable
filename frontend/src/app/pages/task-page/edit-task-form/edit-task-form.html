@@ -1,37 +1,61 @@
 <div class="edit-task-container">
+
+  <button class="close-btn" (click)="closeModal()">X</button>
+
   <h2>Edytuj task</h2>
 
   <form [formGroup]="updateTaskForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input id="task-name" formControlName="name"/>
-      @if(updateTaskForm.get('name')?.invalid && updateTaskForm.get('name')?.touched){
-        <div class="error">
-          Nazwa nie może być pusta!
-        </div>
-      }
-    </div>
 
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="task-description"  formControlName="description" rows="5"></textarea>
-    </div>
+    <div class="form-content-scroll">
 
-    <mat-form-field class="assignationsDD">
-      <mat-label>Przypisani użytkownicy</mat-label>
-      <mat-select formControlName="assignedUsers" multiple [compareWith]="compareUsers">
-
-        @for(user of usersInProject; track user.email){
-          <mat-option [value]="user">
-            {{user.username}}
-          </mat-option>
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input id="task-name" formControlName="name"/>
+        @if(updateTaskForm.get('name')?.invalid && updateTaskForm.get('name')?.touched){
+          <div class="error">
+            Nazwa nie może być pusta!
+          </div>
         }
+      </div>
 
-      </mat-select>
-    </mat-form-field>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="task-description"  formControlName="description"></textarea>
+      </div>
 
-    <button type="submit">Zapisz task</button>
+      <mat-form-field class="assignationsDD">
+        <mat-label>Przypisani użytkownicy</mat-label>
+        <mat-select formControlName="assignedUsers" multiple [compareWith]="compareUsers">
+
+          <div class="filter-container" (click)="$event.stopPropagation()">
+            <input
+              #searchUserInput
+              (input)="filterUsers(searchUserInput.value)"
+              placeholder="Wyszukaj..."
+              class="search-input">
+          </div>
+
+          @for(user of filteredUsers; track user.email){
+            <mat-option [value]="user">
+              {{user.username}}
+            </mat-option>
+          }
+
+          @if(filteredUsers.length === 0){
+            <mat-option [disabled]="true">Brak wyników</mat-option>
+          }
+
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
+      <button type="submit">Zapisz task</button>
+    </div>
   </form>
+
   @if(errorMessage){
     <p class="error">{{ errorMessage }}</p>
   }

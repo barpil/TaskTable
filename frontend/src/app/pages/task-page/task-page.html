@@ -1,5 +1,8 @@
-<return-btn [returnPath]="'/teams/'+this.teamId"></return-btn>
-<button class="add-task-btn" (click)="openModal()">Add task</button>
+<button-panel>
+  <return-btn [returnPath]="'/teams/'+this.teamId"></return-btn>
+  <button class="add-task-btn" (click)="openModal()">Add task</button>
+</button-panel>
+
 <div>
   <task-list [projectId]="projectId"></task-list>
 </div>
