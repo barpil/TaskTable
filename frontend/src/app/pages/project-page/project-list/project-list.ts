@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
     LoadingAnimation
   ],
   templateUrl: './project-list.html',
-  styleUrl: './project-list.css'
+  styleUrls: ['./project-list.css', '../../../common-components/common-styles.css']
 })
 export class ProjectList implements OnInit{
   @Input() teamId!: number;

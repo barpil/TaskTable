@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Team, UsersTeams} from '../../../services/data/team';
-import {TeamService} from '../../../services/team-service';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'team-tile',
-  imports: [],
+  imports: [
+    DatePipe
+  ],
   templateUrl: './team-tile.html',
-  styleUrl: './team-tile.css'
+  styleUrls: ['./team-tile.css', '../../../common-components/common-styles.css']
 })
 export class TeamTile {
   @Input() teamAndJoinDate!: UsersTeams;
@@ -15,4 +17,6 @@ export class TeamTile {
   onClickedTile(){
     this.teamClicked.emit(this.teamAndJoinDate.team);
   }
+
+
 }

@@ -59,4 +59,5 @@ public class TeamsController {
         teamsService.removeUserFromTeam(request.getAddedUsersEmail(), teamId);
         return ResponseEntity.ok().build();
     }
+
 }

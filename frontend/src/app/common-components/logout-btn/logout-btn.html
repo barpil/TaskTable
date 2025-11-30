@@ -1,1 +1,8 @@
-<button (click)="logoutUser()">Log out</button>
+<div class="logout-container">
+  @if (userName$ | async; as name) {
+    <p>{{ name }}</p>
+  }
+  <button (click)="logoutUser()">log out</button>
+</div>
+
+

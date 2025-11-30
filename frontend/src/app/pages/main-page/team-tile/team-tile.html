@@ -1,5 +1,5 @@
-<article class="team-tile" (click)="onClickedTile()">
+<article class="tile" (click)="onClickedTile()">
   <h3>{{teamAndJoinDate.team.name}}</h3>
   <p>{{teamAndJoinDate.team.description}}</p>
-  <small>joined: {{teamAndJoinDate.join_date}}</small>
+  <small>joined: {{teamAndJoinDate.join_date | date: 'dd.MM.yyyy'}}</small>
 </article>

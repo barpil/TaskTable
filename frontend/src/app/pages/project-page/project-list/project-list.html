@@ -1,6 +1,6 @@
 @if (projects) {
   @if(projects.length != 0) {
-    <div class="projects">
+    <div class="tile-list">
       @for(project of projects; track project.id){
         <project-tile [projectObject]="project" (projectClicked)="handleClickedProject($event)"></project-tile>
       }

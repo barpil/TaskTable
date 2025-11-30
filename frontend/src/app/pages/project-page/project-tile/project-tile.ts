@@ -6,7 +6,7 @@ import {Project} from '../../../services/data/project';
   selector: 'project-tile',
   imports: [],
   templateUrl: './project-tile.html',
-  styleUrl: './project-tile.css'
+  styleUrls: ['./project-tile.css', '../../../common-components/common-styles.css']
 })
 export class ProjectTile {
   @Input() projectObject!: Project;

@@ -5,13 +5,15 @@ import {ReturnBtn} from '../../common-components/return-btn/return-btn';
 import {Dialog} from '@angular/cdk/dialog';
 import {AddTaskForm} from './add-task-form/add-task-form';
 import {ButtonPanel} from '../../common-components/button-panel/button-panel';
+import {LogoutBtn} from '../../common-components/logout-btn/logout-btn';
 
 @Component({
   selector: 'app-task-page',
   imports: [
     TaskList,
     ReturnBtn,
-    ButtonPanel
+    ButtonPanel,
+    LogoutBtn
   ],
   templateUrl: './task-page.html',
   styleUrl: './task-page.css'
@@ -19,7 +21,7 @@ import {ButtonPanel} from '../../common-components/button-panel/button-panel';
 export class TaskPage implements OnInit{
   teamId!: number;
   projectId!: number;
-  private dialog = inject(Dialog);
+  private readonly dialog = inject(Dialog);
 
   constructor(private readonly route: ActivatedRoute) {
   }

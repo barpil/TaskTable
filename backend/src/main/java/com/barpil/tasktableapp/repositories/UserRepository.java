@@ -50,4 +50,5 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     int removeUser(String email);
 
     List<Users> findByName(String username);
+
 }

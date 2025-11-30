@@ -1,8 +1,10 @@
 <button-panel>
   <return-btn [returnPath]="'/teams/'+this.teamId"></return-btn>
-  <button class="add-task-btn" (click)="openModal()">Add task</button>
+  <logout-btn style="margin-left: auto;margin-right: 10px"></logout-btn>
 </button-panel>
 
-<div>
+
+<div style="padding: 20px">
+  <button class="add-task-btn" (click)="openModal()">Add task</button>
   <task-list [projectId]="projectId"></task-list>
 </div>

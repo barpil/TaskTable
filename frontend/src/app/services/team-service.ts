@@ -13,7 +13,7 @@ export class TeamService {
   constructor(private readonly http: HttpClient) {
   }
 
-  getTeams(reload = false): Observable<UsersTeams[]>{
+  getTeams(reload = true): Observable<UsersTeams[]>{
     if(!this.teamsCache$ || reload){
       this.teamsCache$ = this.http.get<GetTeamsResponse>(environment.apiUrl+'/teams', {withCredentials: true})
         .pipe(

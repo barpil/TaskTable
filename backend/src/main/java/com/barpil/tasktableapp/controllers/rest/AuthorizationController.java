@@ -5,6 +5,8 @@ import com.barpil.tasktableapp.controllers.rest.dto.LoginResponse;
 import com.barpil.tasktableapp.controllers.rest.dto.RegisterRequest;
 import com.barpil.tasktableapp.controllers.rest.dto.RegisterResponse;
 import com.barpil.tasktableapp.security.services.JwtTokenService;
+import com.barpil.tasktableapp.services.ProjectsService;
+import com.barpil.tasktableapp.services.TeamsService;
 import com.barpil.tasktableapp.services.UsersService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,12 +25,16 @@ import java.util.Map;
 public class AuthorizationController {
 
     private final UsersService usersService;
+    private final TeamsService teamsService;
+    private final ProjectsService projectsService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
 
     @Autowired
-    public AuthorizationController(UsersService usersService, AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
+    public AuthorizationController(UsersService usersService, TeamsService teamsService, ProjectsService projectsService, AuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
         this.usersService = usersService;
+        this.teamsService = teamsService;
+        this.projectsService = projectsService;
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
     }
@@ -95,5 +101,29 @@ public class AuthorizationController {
 
     private boolean isTokenValid(String token){
         return (token != null && jwtTokenService.validateToken(token));
+    }
+
+    @GetMapping("/access/team/{teamId}")
+    public ResponseEntity<?> checkTeamAccess(@CookieValue(value = "jwt") String token, @PathVariable("teamId") Long teamId) {
+        if(!isTokenValid(token)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        String userEmail = this.jwtTokenService.getLoggedUsersEmail(token);
+        if(teamsService.getUsersInTeam(teamId).stream().anyMatch(user -> user.getEmail().equals(userEmail))){
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @GetMapping("/access/project/{projectId}")
+    public ResponseEntity<?> checkProjectAccess(@CookieValue(value = "jwt") String token, @PathVariable("projectId") Long projectId) {
+        if(!isTokenValid(token)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        String userEmail = this.jwtTokenService.getLoggedUsersEmail(token);
+        if(projectsService.getUsersInProject(projectId).stream().anyMatch(user -> user.getEmail().equals(userEmail))){
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }

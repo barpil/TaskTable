@@ -7,13 +7,13 @@ import {environment} from '../../environments/environment';
   providedIn: 'root'
 })
 export class UserService {
-  private loggedUserCache$?: Observable<Record<string, string>>;
+  private loggedUserCache$?: Observable<UserInfo>;
   constructor(private readonly http: HttpClient) {}
 
 
-  getLoggedUserInfo(reload = false): Observable<Record<string, string>>{
+  getLoggedUserInfo(reload = true): Observable<UserInfo>{
     if(!this.loggedUserCache$ || reload){
-      this.loggedUserCache$ = this.http.get<Record<string, string>>(environment.apiUrl+'/auth/whoami', {withCredentials: true})
+      this.loggedUserCache$ = this.http.get<UserInfo>(environment.apiUrl+'/auth/whoami', {withCredentials: true})
         .pipe(
           shareReplay({bufferSize: 1, refCount: true}),
           catchError(err => {
@@ -26,4 +26,9 @@ export class UserService {
   }
 
 
+}
+
+export interface UserInfo{
+  username: string;
+  email: string;
 }

@@ -4,10 +4,12 @@ import {ErrorPage} from './pages/error-page/error-page';
 import {LoginPage} from './pages/login-page/login-page';
 import {RegisterPage} from './pages/register-page/register-page';
 import {MainPage} from './pages/main-page/main-page';
-import {AuthGuard} from './auth-guard';
 import {UserResolver} from './resolvers/user-resolver-resolver';
 import {ProjectPage} from './pages/project-page/project-page';
 import {TaskPage} from './pages/task-page/task-page';
+import {canActivateTeam} from './guards/canActivateTeam';
+import {AuthGuard} from './guards/auth-guard';
+import {canActivateProject} from './guards/canActivateProject';
 
 
 export const routes: Routes = [
@@ -19,7 +21,7 @@ export const routes: Routes = [
     resolve: {
       userInfo: UserResolver
     }},
-  {path: 'teams/:teamId', component: ProjectPage, canActivate: [AuthGuard]},
-  {path: 'teams/:teamId/projects/:projectId', component: TaskPage, canActivate: [AuthGuard]},
+  {path: 'teams/:teamId', component: ProjectPage, canActivate: [AuthGuard, canActivateTeam]},
+  {path: 'teams/:teamId/projects/:projectId', component: TaskPage, canActivate: [AuthGuard, canActivateTeam, canActivateProject]},
   {path: '**', redirectTo: ''}
 ];

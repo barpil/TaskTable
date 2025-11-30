@@ -1,9 +1,9 @@
 import {RedirectCommand, ResolveFn, Router} from '@angular/router';
-import {UserService} from '../services/user-service';
+import {UserInfo, UserService} from '../services/user-service';
 import {inject} from '@angular/core';
 import {catchError, map, of} from 'rxjs';
 
-export const UserResolver: ResolveFn<Record<string, string>| null | RedirectCommand> = (route, state) => {
+export const UserResolver: ResolveFn<UserInfo| null | RedirectCommand> = (route, state) => {
   const userService = inject(UserService);
   const router = inject(Router)
   const errorUrlTree = router.parseUrl('/error');
