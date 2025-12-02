@@ -1,5 +1,8 @@
 @if (tasks) {
   @if(tasks.tasks.length != 0) {
+    <div style="display: flex">
+      <button class="filter-btn" (click)="openFilterModal()" style="margin-left: auto;margin-right: 10px">Filtruj</button>
+    </div>
     <div class="kanban-board">
 
       <div class="kanban-column">

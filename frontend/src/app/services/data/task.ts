@@ -4,13 +4,16 @@ export interface Tasks{
   tasks: Task[];
 }
 
+export type TaskStatus = "TO_DO" | "IN_PROGRESS" | "DONE";
 
 export interface Task {
   id: number;
   name: string;
   description: string;
-  state: "TO_DO" | "IN_PROGRESS" | "DONE";
+
+  state: TaskStatus;
   assigned_users: User[];
 }
+
 
 
