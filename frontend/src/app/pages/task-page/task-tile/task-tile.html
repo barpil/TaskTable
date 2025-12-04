@@ -1,0 +1,8 @@
+<article class="task-tile" (dblclick)="openTaskDetailsModal()">
+  <h4 class="task-title">{{taskObject.name}}</h4>
+  <div class="task-footer">
+    <small class="assigned-count">
+      <span class="icon">👥</span> {{taskObject.assigned_users.length}} assigned
+    </small>
+  </div>
+</article>

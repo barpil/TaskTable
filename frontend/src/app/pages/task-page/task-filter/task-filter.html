@@ -1,0 +1,53 @@
+<div class="task-filter-container">
+  <button class="close-btn" (click)="closeModal()">X</button>
+  <h2>Filtruj taski</h2>
+
+  <form [formGroup]="filterTaskForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field class="filter-option">
+        <mat-label>State</mat-label>
+        <mat-select formControlName="states" multiple>
+          @for(state of states; track state){
+            <mat-option [value]="state">
+              {{state}}
+            </mat-option>
+          }
+
+          @if(states.length === 0){
+            <mat-option [disabled]="true">Brak stateów</mat-option>
+          }
+
+        </mat-select>
+      </mat-form-field>
+
+    <mat-form-field class="assignationsDD">
+      <mat-label>Przypisani użytkownicy</mat-label>
+      <mat-select formControlName="assignedUsers" multiple [compareWith]="compareUsers">
+
+        <div class="filter-container" (click)="$event.stopPropagation()">
+          <input
+            #searchUserInput
+            (input)="filterUsers(searchUserInput.value)"
+            placeholder="Wyszukaj..."
+            class="search-input">
+        </div>
+
+        @for(user of filteredUsersOptions; track user.email){
+          <mat-option [value]="user">
+            {{user.username}}
+          </mat-option>
+        }
+
+        @if(usersInProject.length === 0){
+          <mat-option [disabled]="true">Brak userów</mat-option>
+        }
+
+      </mat-select>
+    </mat-form-field>
+
+    <div class="dialog-actions">
+      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
+      <button type="submit">Filtruj</button>
+    </div>
+  </form>
+</div>

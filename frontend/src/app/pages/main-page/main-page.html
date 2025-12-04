@@ -1,0 +1,16 @@
+<button-panel>
+  <logout-btn style="margin-left: auto;margin-right: 10px"></logout-btn>
+</button-panel>
+<div style="; width: 100%;display: flex;justify-content: center">
+  @if (userInfo) {
+    <h1>Witaj, {{ this.userInfo.username }}</h1>
+  } @else {
+    <p>Ładowanie danych użytkownika...</p>
+  }
+</div>
+
+<div>
+  <button style="margin-left: auto;margin-right: 10px" (click)="openCreateTeamModal()">Utwórz zespół</button>
+  <team-list #teamList></team-list>
+</div>
+

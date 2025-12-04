@@ -1,0 +1,8 @@
+.button-panel {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  width: 100%;
+  padding: 5px 5px;
+  background-color: #AAC9DF;
+}

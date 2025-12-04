@@ -1,0 +1,19 @@
+<div class="sort-dialog-container">
+  <h2>Sort Teams</h2>
+
+  <div class="form-field">
+    <label for="sortSelect">Kryterium sortowania:</label>
+
+    <select id="sortSelect" [(ngModel)]="selectedSort" class="sort-select">
+      <option value="name_asc">Nazwa (A-Z)</option>
+      <option value="name_desc">Nazwa (Z-A)</option>
+      <option value="date_desc">Data dołączenia (Najnowsze)</option>
+      <option value="date_asc">Data dołączenia (Najstarsze)</option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button class="btn-cancel" (click)="close()">Anuluj</button>
+    <button class="btn-confirm" (click)="apply()">Zastosuj</button>
+  </div>
+</div>

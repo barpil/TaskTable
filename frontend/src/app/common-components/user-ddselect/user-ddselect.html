@@ -1,0 +1,24 @@
+<mat-form-field class="assignationsDD">
+  <mat-label>{{label}}</mat-label>
+  <mat-select [formControl]="formControlTyped" multiple [compareWith]="compareUsers">
+
+    <div class="filter-container" (click)="$event.stopPropagation()">
+      <input
+        #searchUserInput
+        (input)="filterUsers(searchUserInput.value)"
+        placeholder="Wyszukaj..."
+        class="search-input">
+    </div>
+
+    @for(user of filteredUsers; track user.email){
+      <mat-option [value]="user">
+        {{user.username}}
+      </mat-option>
+    }
+
+    @if(filteredUsers.length === 0){
+      <mat-option [disabled]="true">Brak wyników</mat-option>
+    }
+
+  </mat-select>
+</mat-form-field>

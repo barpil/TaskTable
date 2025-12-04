@@ -1,0 +1,41 @@
+<div class="edit-task-container">
+
+  <button class="close-btn" (click)="closeModal()">X</button>
+
+  <h2>Edytuj task</h2>
+
+  <form [formGroup]="updateTaskForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-content-scroll">
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input id="task-name" formControlName="name"/>
+        @if(updateTaskForm.get('name')?.invalid && updateTaskForm.get('name')?.touched){
+          <div class="error">
+            Nazwa nie może być pusta!
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="task-description"  formControlName="description"></textarea>
+      </div>
+
+      <user-ddselect [formControlRef]="updateTaskForm.get('assignedUsers')!" [label]="'Przypisani użytkownicy'"
+      [userTable]="usersInProject"></user-ddselect>
+
+
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
+      <button type="submit">Zapisz task</button>
+    </div>
+  </form>
+
+  @if(errorMessage){
+    <p class="error">{{ errorMessage }}</p>
+  }
+</div>

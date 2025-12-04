@@ -1,0 +1,23 @@
+<div class="task-details-dialog">
+  <button class="close-btn" (click)="close()">✖</button>
+  <h2 class="task-title-detail">{{ data.task.name }}</h2>
+
+  <div class="details-section">
+    <h4 class="details-label">Description:</h4>
+    <p class="description-text">{{ data.task.description || 'Brak opisu.' }}</p>
+  </div>
+
+  <div class="details-section">
+    <h4 class="details-label">Status:</h4>
+    <p class="status-badge status-{{data.task.state}}">{{ formatStatus(data.task.state) }}</p>
+  </div>
+
+  <div class="details-section">
+    <h4 class="details-label">Assigned Users ({{ data.task.assigned_users.length }}):</h4>
+    <p class="assigned-users-list">{{ assignedUsersUsernames }}</p>
+  </div>
+
+  <div class="dialog-actions">
+    <button class="edit-btn" (click)="openTaskEditModal()">Edytuj zadanie</button>
+  </div>
+</div>

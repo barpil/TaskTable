@@ -1,0 +1,32 @@
+@if (joinedTeams) {
+  @if(joinedTeams.length!=0){
+    <div style="display: flex">
+      <button class="filter-btn" (click)="openSortDialog()" style="margin-left: auto;margin-right: 10px">Filtruj</button>
+    </div>
+    <div class="tile-list">
+      <div>
+        <h3>Owned teams</h3>
+        @for(team of ownedTeams; track team.team.team_id){
+          <div style="display: flex;width: 100%">
+            <team-tile [teamAndJoinDate]="team" (teamClicked)="handleClickedTeam($event)"></team-tile>
+            <button class="delete-team-btn" (click)="deleteTeam(team)">Delete</button>
+          </div>
+        }
+      </div>
+
+      <div>
+        <h3>Teams</h3>
+        @for(team of memberTeams; track team.team.team_id){
+          <team-tile [teamAndJoinDate]="team" (teamClicked)="handleClickedTeam($event)"></team-tile>
+        }
+      </div>
+
+
+
+    </div>
+  } @else {
+    <p>Team list is empty</p>
+  }
+} @else {
+  <loading-animation/>
+}

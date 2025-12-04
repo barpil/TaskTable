@@ -1,0 +1,26 @@
+<div class="create-team-dialog">
+  <h2>Create team</h2>
+  <form [formGroup]="createTeamForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+      <label for="name">Team name</label>
+      <input id="team-name" formControlName="name"/>
+      @if(createTeamForm.get('name')?.invalid && createTeamForm.get('name')?.touched){
+        <div class="error">
+          Nazwa nie może być pusta!
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input id="team-description" formControlName="description"/>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
+      <button type="submit">Utwórz zespół</button>
+    </div>
+  </form>
+
+</div>

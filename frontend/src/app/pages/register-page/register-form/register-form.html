@@ -1,0 +1,33 @@
+<form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label class="label">Username
+      <input type="text" class="input" placeholder="username" formControlName="username"/>
+    </label>
+  </div>
+  <div class="field">
+    <label class="label">Email
+      <input type="text" class="input" placeholder="email@mail.com" formControlName="email"/>
+    </label>
+    @if(isFieldInvalid('email')){
+      <span>Pole niepoprawne</span>
+    }
+  </div>
+  <div class="field">
+    <label class="label">Password
+      <input type="password" class="input" placeholder="password" formControlName="password"/>
+    </label>
+
+  </div>
+  <div class="field">
+    <label class="label">Repeat password
+      <input type="password" class="input" placeholder="repeat password" (focus)="onRepeatPasswordFocus()" formControlName="repeat_password"/>
+    </label>
+    @if(passwordsDidNotMatch){
+      <span>Podane hasła są niezgodne</span>
+    }
+  </div>
+
+  <div>
+    <button type="submit" class="button">Register</button>
+  </div>
+</form>
