@@ -23,30 +23,9 @@
         <textarea id="task-description"  formControlName="description"></textarea>
       </div>
 
-      <mat-form-field class="assignationsDD">
-        <mat-label>Przypisani użytkownicy</mat-label>
-        <mat-select formControlName="assignedUsers" multiple [compareWith]="compareUsers">
+      <user-ddselect [formControlRef]="updateTaskForm.get('assignedUsers')!" [label]="'Przypisani użytkownicy'"
+      [userTable]="usersInProject"></user-ddselect>
 
-          <div class="filter-container" (click)="$event.stopPropagation()">
-            <input
-              #searchUserInput
-              (input)="filterUsers(searchUserInput.value)"
-              placeholder="Wyszukaj..."
-              class="search-input">
-          </div>
-
-          @for(user of filteredUsers; track user.email){
-            <mat-option [value]="user">
-              {{user.username}}
-            </mat-option>
-          }
-
-          @if(filteredUsers.length === 0){
-            <mat-option [disabled]="true">Brak wyników</mat-option>
-          }
-
-        </mat-select>
-      </mat-form-field>
 
     </div>
 

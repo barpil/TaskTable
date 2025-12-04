@@ -9,6 +9,7 @@ import {UserNameEmail} from '../../../services/data/user';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {forkJoin} from 'rxjs';
+import {UserDDSelect} from '../../../common-components/user-ddselect/user-ddselect';
 
 
 @Component({
@@ -19,7 +20,8 @@ import {forkJoin} from 'rxjs';
     MatFormField,
     MatLabel,
     MatSelect,
-    MatOption
+    MatOption,
+    UserDDSelect
   ],
   templateUrl: './edit-task-form.html',
   styleUrl: './edit-task-form.css'
@@ -57,28 +59,6 @@ export class EditTaskForm implements OnInit{
     })
   }
 
-  filterUsers(value: string): void {
-    const filterValue = value.toLowerCase();
-
-    const matchingUsers = this.usersInProject.filter(user =>
-      user.username.toLowerCase().includes(filterValue) || user.email.toLowerCase().includes(filterValue)
-    );
-
-    const selectedUsers: UserNameEmail[] = this.updateTaskForm.get('assignedUsers')?.value || [];
-
-    const combinedMap = new Map<string, UserNameEmail>();
-
-    matchingUsers.forEach(user => combinedMap.set(user.email, user));
-
-    selectedUsers.forEach(user => {
-      if (!combinedMap.has(user.email)) {
-        combinedMap.set(user.email, user);
-      }
-    });
-
-
-    this.filteredUsers = Array.from(combinedMap.values());
-  }
 
   onSubmit(){
     if(this.updateTaskForm.invalid) return;
@@ -125,10 +105,6 @@ export class EditTaskForm implements OnInit{
     this.dialogRef?.close();
   }
 
-
-  compareUsers(user1: UserNameEmail, user2: UserNameEmail): boolean{
-    return user1 && user2 ? user1.email === user2.email : user1 === user2;
-  }
 
 }
 

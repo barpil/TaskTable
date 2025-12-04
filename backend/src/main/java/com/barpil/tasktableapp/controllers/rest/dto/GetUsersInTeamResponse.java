@@ -2,7 +2,6 @@ package com.barpil.tasktableapp.controllers.rest.dto;
 
 import com.barpil.tasktableapp.repositories.entities.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;

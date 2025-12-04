@@ -81,6 +81,17 @@ public class TeamsService {
         return userRepository.getUserByEmail(email).orElseThrow(() -> new RuntimeException("USER NIE ISTNIEJE"));
     }
 
+    public boolean deleteTeam(Long teamId, String userEmail){
+        Teams team = teamsRepository.findById(teamId).orElseThrow(() -> new RuntimeException("PODANY TEAM NIE ISTNIEJE"));
+        if(team.getOwner().getEmail().equals(userEmail)){
+            teamsRepository.deleteById(teamId);
+            return true;
+        }
+        return false;
+    }
+
+
+
 
 
 

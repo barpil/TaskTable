@@ -9,6 +9,7 @@ import com.barpil.tasktableapp.repositories.entities.Users;
 import com.barpil.tasktableapp.security.services.JwtTokenService;
 import com.barpil.tasktableapp.services.TeamsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,19 +42,29 @@ public class TeamsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{teamId}")
+    @DeleteMapping("/{teamId}")
+    public ResponseEntity<?> deleteTeam(@CookieValue(value = "jwt") String token,
+        @PathVariable("teamId") Long teamId){
+        String userEmail = jwtTokenService.getLoggedUsersEmail(token);
+        if(teamsService.deleteTeam(teamId, userEmail)){
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @GetMapping("/{teamId}/members")
     public ResponseEntity<?> getUsersInTeam(@PathVariable("teamId") Long teamId){
         return ResponseEntity.ok(new GetUsersInTeamResponse(teamsService.getUsersInTeam(teamId)));
     }
 
-    @PostMapping("/{teamId}")
+    @PostMapping("/{teamId}/members")
     public ResponseEntity<?> addUserToTeam(@PathVariable("teamId") Long teamId,
                                            @RequestBody AddUserToTeamRequest request){
         teamsService.addUserToTeam(request.getAddedUsersEmail(), teamId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{teamId}")
+    @DeleteMapping("/{teamId}/members")
     public ResponseEntity<?> removeUserFromTeam(@PathVariable("teamId") Long teamId,
                                            @RequestBody AddUserToTeamRequest request){
         teamsService.removeUserFromTeam(request.getAddedUsersEmail(), teamId);
