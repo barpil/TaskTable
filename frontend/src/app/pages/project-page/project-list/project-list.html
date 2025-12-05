@@ -2,7 +2,12 @@
   @if(projects.length != 0) {
     <div class="tile-list">
       @for(project of projects; track project.id){
-        <project-tile [projectObject]="project" (projectClicked)="handleClickedProject($event)"></project-tile>
+        <div style="display: flex;width: 100%; align-items: center;">
+          <project-tile [projectObject]="project" (projectClicked)="handleClickedProject($event)"></project-tile>
+          @if(project.owner.email === loggedUserEmail){
+            <button class="delete-project-btn" (click)="deleteProject(project)"></button>
+          }
+        </div>
       }
     </div>
   } @else {

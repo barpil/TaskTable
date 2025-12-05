@@ -4,5 +4,6 @@
 </button-panel>
 
 <div>
-  <project-list [teamId]="teamId"></project-list>
+  <button class="create-project-btn" style="margin-left: auto;margin-right: 10px" (click)="openCreateProjectModal()">Utwórz projekt</button>
+  <project-list #projectList [teamId]="teamId"></project-list>
 </div>

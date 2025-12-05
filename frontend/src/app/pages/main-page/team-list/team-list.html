@@ -7,9 +7,9 @@
       <div>
         <h3>Owned teams</h3>
         @for(team of ownedTeams; track team.team.team_id){
-          <div style="display: flex;width: 100%">
+          <div style="display: flex;width: 100%; align-items: center;">
             <team-tile [teamAndJoinDate]="team" (teamClicked)="handleClickedTeam($event)"></team-tile>
-            <button class="delete-team-btn" (click)="deleteTeam(team)">Delete</button>
+            <button class="delete-team-btn" (click)="deleteTeam(team)"></button>
           </div>
         }
       </div>
