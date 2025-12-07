@@ -1,0 +1,25 @@
+<div class="team-details-dialog">
+  <button class="close-btn" (click)="close()">✖</button>
+  <h2 class="team-title-detail">{{ data.team.name }}</h2>
+
+  <div class="details-section">
+    <h4 class="details-label">Description:</h4>
+    <p class="description-text">{{ data.team.description || 'Brak opisu.' }}</p>
+  </div>
+
+  <div class="details-section">
+    <h4 class="details-label">Owner:</h4>
+    <p>{{ ownerUsername | async }}</p>
+  </div>
+
+  <div class="details-section">
+    <h4 class="details-label">Members ({{ assignedUsers.length }}):</h4>
+    <p class="members-list">{{ assignedUsersUsernames }}</p>
+  </div>
+
+  <div class="dialog-actions">
+    @if(isTeamOwner() | async){
+      <button class="invite-btn" (click)="openTeamInvitationModal()">Invite users</button>
+    }
+  </div>
+</div>

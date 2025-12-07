@@ -41,4 +41,6 @@ export class ProjectPage implements OnInit{
       this.projectListRef.refreshProjects();
     });
   }
+
+
 }

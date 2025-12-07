@@ -1,0 +1,39 @@
+.invitation-dialog {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+
+  max-width: 30vw;
+  width: 30vw;
+
+  max-height: 25vh;
+  height: 25%;
+  margin: 0 auto;
+
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.invitation-dialog h2 {
+  font-size: 24px;
+  color: #172b4d;
+  margin-top: 0;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #ebecf0;
+  padding-bottom: 10px;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.invitation-code-space {
+  display: flex;
+  justify-content: center;
+  background-color: #a0a0a0;
+  padding: 1px 5px;
+  border-radius: 10px 10px;
+}

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -90,7 +91,9 @@ public class TeamsService {
         return false;
     }
 
-
+    public Optional<Teams> getTeam(Long teamId){
+        return teamsRepository.findById(teamId);
+    }
 
 
 

@@ -56,7 +56,21 @@ CREATE TABLE task_assignations(
 	user_id INTEGER REFERENCES users (id),
 	assigned_date TIMESTAMP NOT NULL DEFAULT NOW(),
 	PRIMARY KEY (task_id, user_id)
-)
+);
+
+-- Team invitations
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE team_invitations(
+                                 id BIGSERIAL PRIMARY KEY,
+                                 invitation_code UUID NOT NULL DEFAULT gen_random_uuid(),
+                                 team_id SERIAL UNIQUE REFERENCES teams(team_id),
+                                 expiration_time TIMESTAMP NOT NULL DEFAULT (NOW()+ INTERVAL '1 day')
+);
+
+-- Dodanie indexów dla szybszego wyszukiwania rekordów (bo wtedy )
+CREATE INDEX idx_team_invitations_invitation_code ON team_invitations(invitation_code);
+CREATE INDEX idx_team_invitations_team_id ON team_invitations(team_id);
+CREATE INDEX idx_team_invitations_expiration_time ON team_invitations(expiration_time);
 
 
 
