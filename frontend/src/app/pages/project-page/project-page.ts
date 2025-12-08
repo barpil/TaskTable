@@ -6,6 +6,9 @@ import {ButtonPanel} from '../../common-components/button-panel/button-panel';
 import {LogoutBtn} from '../../common-components/logout-btn/logout-btn';
 import {Dialog} from '@angular/cdk/dialog';
 import {CreateProjectDialog} from './create-project-dialog/create-project-dialog';
+import {TeamService} from '../../services/team-service';
+import {Team} from '../../services/data/team';
+import {find, map} from 'rxjs';
 
 @Component({
   selector: 'app-project-page',
@@ -20,9 +23,11 @@ import {CreateProjectDialog} from './create-project-dialog/create-project-dialog
 })
 export class ProjectPage implements OnInit{
   teamId!: number;
+  team: Team | null = null;
   dialog = inject(Dialog)
   @ViewChild('projectList')
   readonly projectListRef!: ProjectList;
+  private readonly teamService = inject(TeamService);
   constructor(private readonly route: ActivatedRoute) {
   }
 
@@ -30,6 +35,9 @@ export class ProjectPage implements OnInit{
     this.route.paramMap.subscribe(paramMap => {
       const id = paramMap.get("teamId");
       if(id) this.teamId = +id;
+      this.teamService.getTeams().pipe(map(teams => teams.find(team => team.team.team_id === this.teamId))).subscribe(result =>{
+        this.team = result?.team ?? null;
+      });
     })
   }
 

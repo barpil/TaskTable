@@ -6,7 +6,7 @@
   max-height: 100%;
 }
 
-.team-details-dialog {
+.project-details-dialog {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -42,7 +42,7 @@
   color: #333;
 }
 
-.team-title-detail {
+.project-title-detail {
   font-size: 24px;
   color: #172b4d;
   margin-top: 0;
@@ -86,57 +86,13 @@
   overflow-y: auto;
 }
 
-.members-list {
-  font-size: 16px;
-  color: #42526e;
-}
 
 
 .dialog-actions {
   text-align: right;
-  margin-top: 10px;
+  margin-top: 30px;
   flex-shrink: 0;
   padding-top: 15px;
   border-top: 1px solid #ebecf0;
 }
 
-.invite-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-.invite-btn:hover {
-  background-color: #0056b3;
-}
-
-.invite-btn:active {
-  transform: translateY(1px);
-}
-
-.small-btn {
-  margin-top: -5px;
-  background-color: #007bff;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: background-color 0.2s, transform 0.1s, font-size 0.2s;
-}
-
-.small-btn:hover {
-  background-color: #0056b3;
-}
-
-.small-btn:active{
-  font-size: 11px;
-}

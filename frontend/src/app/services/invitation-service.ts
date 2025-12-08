@@ -9,10 +9,11 @@ import {environment} from '../../environments/environment';
 export class InvitationService {
   private readonly http = inject(HttpClient);
 
-  async createTeamInvitation(teamId: number): Promise<string>{
+  async createTeamInvitation(teamId: number, regenerate:boolean = false): Promise<string>{
     const request: CreateInvitationRequest = {team_id: teamId};
     try{
-      const response = await firstValueFrom(this.http.post<CreateInvitationResponse>(environment.apiUrl+'/invite', request, {withCredentials: true, observe: "response"}));
+      const response = await firstValueFrom(this.http.post<CreateInvitationResponse>(environment.apiUrl+'/invite', request,
+        {withCredentials: true, observe: "response", params: {regenerate: regenerate}}));
       return response.body?.invitation_code ?? "";
     }catch(error){
       return "";

@@ -17,9 +17,9 @@
     <div>
       @if(editingMembers){
         <div>
-          <user-ddselect [formControlRef]="editUsersTaskForm.get('members')!" [label]="'No members left'"
+          <user-ddselect [formControlRef]="editUsersTaskForm.get('members')!" [label]="'Select members to keep'"
                          [userTable]="assignedUsersInForm"></user-ddselect>
-          <button (click)="onEditUsersSubmit()">Save</button>
+          <button class="small-btn" (click)="onEditUsersSubmit()">Save</button>
         </div>
 
       }@else{
@@ -28,7 +28,7 @@
       }
 
       @if((isTeamOwner() | async) && !editingMembers && assignedUsers.length>0){
-        <button (click)="turnOnEditingMembers()">Manage members</button>
+        <button class="small-btn" (click)="turnOnEditingMembers()">Manage members</button>
       }
     </div>
 

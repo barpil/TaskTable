@@ -27,11 +27,17 @@ public class InvitationController {
 
     @PostMapping("")
     public ResponseEntity<?> createInvitation(@RequestBody CreateInvitationRequest request,
+                                              @RequestParam(name = "regenerate", required = false) Boolean regenerate,
                                               @CookieValue(name = "jwt") String token){
+
         String invitorEmail = jwtTokenService.getLoggedUsersEmail(token);
         Optional<Teams> team = teamsService.getTeam(request.getTeamId());
         if(team.isPresent() && team.get().getOwner().getEmail().equals(invitorEmail)){
-            return ResponseEntity.ok(new CreateInvitationResponse(invitationsService.createInvitation(team.get().getId()).getInvitationCode().toString()));
+            if(regenerate == null){
+                return ResponseEntity.ok(new CreateInvitationResponse(invitationsService.createInvitation(team.get().getId()).getInvitationCode().toString()));
+            }else{
+                return ResponseEntity.ok(new CreateInvitationResponse(invitationsService.createInvitation(team.get().getId(), regenerate).getInvitationCode().toString()));
+            }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

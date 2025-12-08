@@ -22,7 +22,11 @@ export class TeamInvitationDialog implements OnInit{
 
 
   ngOnInit(){
-    this.invitationService.createTeamInvitation(this.teamId)
+    this.setInvitationLink(false);
+  }
+
+  private setInvitationLink(regenerate:boolean = false){
+    this.invitationService.createTeamInvitation(this.teamId, regenerate)
       .then(code => {
         this.invitationCode = code
         if(this.invitationCode === "") {
@@ -32,7 +36,10 @@ export class TeamInvitationDialog implements OnInit{
         }
       })
       .catch(() => this.invitationCode = "")
+  }
 
 
+  protected regenerateInvitationLink() {
+    this.setInvitationLink(true);
   }
 }

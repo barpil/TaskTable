@@ -25,8 +25,16 @@ public class InvitationsService {
     }
 
     public Invitations createInvitation(Long teamId){
+        return createInvitation(teamId, false);
+    }
+
+    public Invitations createInvitation(Long teamId, boolean replaceOldInvitation){
         Teams team = teamsService.getTeam(teamId).orElseThrow(() -> new RuntimeException("SPECIFIED TEAM DOES NOT EXIST"));
         Optional<Invitations> existingInvitation = this.invitationsRepository.findByTeam_Id(teamId);
+        if(replaceOldInvitation && existingInvitation.isPresent()){
+            invitationsRepository.delete(existingInvitation.get());
+            return invitationsRepository.save(new Invitations(team));
+        }
         return existingInvitation.orElseGet(() -> invitationsRepository.save(new Invitations(team)));
     }
 

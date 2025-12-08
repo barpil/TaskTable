@@ -22,3 +22,26 @@
   background-color: #999999;
   box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
+
+.details-btn{
+  font-family: Andale Mono, monospace;
+  font-weight: 700;
+  margin-top: 5px;
+  margin-left: 10px;
+  border: none;
+  padding: 5px 25px;
+  border-radius: 10px 10px 0px 0px;
+  background-color: #D3EFF2;
+  transition: padding 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+.details-btn:hover{
+  margin-top: 1px;
+  border: none;
+  padding: 5px 25px 13px 25px;
+  cursor: pointer;
+
+}
+
+
+

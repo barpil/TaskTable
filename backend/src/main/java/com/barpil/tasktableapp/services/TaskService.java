@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,8 +49,9 @@ public class TaskService {
     }
 
     public void removeTask(Long taskId){
-        Tasks taskToRemove = tasksRepository.findById(taskId).orElseThrow(() -> new RuntimeException("PODANY TASK NIE ISTNIEJE"));
-        tasksRepository.delete(taskToRemove);
+        Optional<Tasks> taskToRemove = tasksRepository.findById(taskId);
+        if(taskToRemove.isEmpty()) return;
+        tasksRepository.delete(taskToRemove.get());
     }
 
     public void updateUsersAssignToTask(Long taskId, List<String> userEmailList){

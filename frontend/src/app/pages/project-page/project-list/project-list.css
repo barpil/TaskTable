@@ -10,6 +10,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-color: transparent;
+  margin-top: 27px;
 }
 
 .delete-project-btn:hover{
@@ -18,4 +19,26 @@
 
 .delete-project-btn:active{
   background-size: 65%;
+}
+
+.filter-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px
+}
+
+.tile-list{
+  margin: 5px;
 }

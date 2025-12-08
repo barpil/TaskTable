@@ -1,25 +1,23 @@
 <div class="add-task-container">
-  <h2>Dodaj nowy task</h2>
+  <h2>Create new task</h2>
 
   <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Name:</label>
-      <input id="task-name" formControlName="name" placeholder="Podaj nazwe nowego taska" />
-      @if(addTaskForm.get('name')?.invalid && addTaskForm.get('name')?.touched){
-        <div class="error">
-          Podaj nazwe taska!
-        </div>
-      }
+      <input id="task-name" formControlName="name" placeholder="Enter task name" />
+
+      <span class="error">{{addTaskForm.get('name')?.invalid && addTaskForm.get('name')?.touched ? "Task name is required!" : "\u00A0"}}</span>
+
     </div>
 
     <div class="form-group">
       <label for="description">Description:</label>
-      <textarea id="task-description"  formControlName="description" placeholder="Podaj opis taska" rows="5"></textarea>
+      <textarea id="task-description"  formControlName="description" placeholder="Enter task description" rows="5"></textarea>
     </div>
 
     <div class="dialog-actions">
-      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
-      <button type="submit">Dodaj task</button>
+      <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+      <button type="submit">Create</button>
     </div>
   </form>
   @if(errorMessage){

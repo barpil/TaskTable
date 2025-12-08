@@ -30,12 +30,6 @@ export class RegisterForm implements OnInit{
     this.returnUrl = this.route.snapshot.queryParams['redirectTo'] || null;
   }
 
-  isFieldInvalid(fieldName: string){
-    return this.registerForm.get(fieldName)?.invalid &&
-      this.registerForm.get(fieldName)?.dirty &&
-      this.registerForm.get(fieldName)?.touched
-  }
-
 
   onSubmit() {
     if(this.registerForm.invalid) return;

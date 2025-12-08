@@ -3,7 +3,8 @@
   <div>
     <h4>Share invitation link to invite users:</h4>
     <div class="invitation-code-space">
-      <p>{{invitationLink}}</p>
+      <span class="copy-text">{{invitationLink}}</span>
     </div>
+    <button class="small-btn" (click)="regenerateInvitationLink()">Regenerate link</button>
   </div>
 </div>
