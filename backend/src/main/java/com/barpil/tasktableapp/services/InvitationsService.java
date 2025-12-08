@@ -35,7 +35,6 @@ public class InvitationsService {
             Invitations invitation = invitationsRepository.findInvitationsByInvitationCode(UUID.fromString(invitationCode))
                     .orElseThrow(() -> new RuntimeException("INVITATION NOT FOUND"));
             teamsService.addUserToTeam(userEmail, invitation.getTeam().getId());
-            invitationsRepository.delete(invitation);
             return invitation.getTeam().getId();
         }catch (Exception e){
             return -1;

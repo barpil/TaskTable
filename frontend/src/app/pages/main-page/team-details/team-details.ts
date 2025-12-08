@@ -8,11 +8,14 @@ import {UserService} from '../../../services/user-service';
 import {take} from 'rxjs/operators';
 import {AsyncPipe} from '@angular/common';
 import {TeamInvitationDialog} from './team-invitation-dialog/team-invitation-dialog';
+import {UserDDSelect} from '../../../common-components/user-ddselect/user-ddselect';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-team-details',
   imports: [
-    AsyncPipe
+    AsyncPipe,
+    UserDDSelect
   ],
   templateUrl: './team-details.html',
   styleUrl: './team-details.css'
@@ -24,11 +27,20 @@ export class TeamDetails implements OnInit{
   private readonly userService = inject(UserService);
   private readonly dialog = inject(Dialog);
   protected assignedUsers: UserNameEmail[] = [];
+  protected assignedUsersInForm: UserNameEmail[] = [];
+  protected editingMembers: boolean = false;
+  usersInProject: UserNameEmail[] = [];
+  editUsersTaskForm: FormGroup;
 
-  get ownerUsername(): Observable<string>{
-    return this.userService.getLoggedUserInfo(false).pipe(
-      take(1),
-      map(userInfo => userInfo.username));
+
+  constructor(private readonly fb: FormBuilder) {
+    this.editUsersTaskForm = this.fb.group({
+      members: [this.assignedUsersInForm]
+    })
+  }
+
+  get ownerUsername(): string{
+    return this.data.team.owner
   }
 
 
@@ -37,8 +49,15 @@ export class TeamDetails implements OnInit{
   }
 
   ngOnInit() {
+    this.refreshUsers();
+  }
+
+  refreshUsers(){
     this.teamService.getUsersInTeam(this.data.team.team_id).subscribe(users => {
-      this.assignedUsers = users.sort((a, b) => a.username.localeCompare(b.username));
+      this.assignedUsers = users.sort((a, b) => a.username.localeCompare(b.username))
+        .filter(user => user.email !== this.data.team.owner);
+      this.assignedUsersInForm = [...this.assignedUsers];
+      this.editUsersTaskForm.get('members')?.setValue(this.assignedUsersInForm);
     });
   }
 
@@ -59,5 +78,25 @@ export class TeamDetails implements OnInit{
     this.dialog.open(TeamInvitationDialog, {
       data: {teamId: this.data.team.team_id}
     });
+  }
+
+  protected turnOnEditingMembers(){
+    this.editingMembers = true;
+  }
+
+  protected onEditUsersSubmit(){
+    const currentMembers = this.assignedUsers.map(u => u.email).sort();
+    const editedUsers: string[] = this.editUsersTaskForm.value.members.map((u: UserNameEmail) => u.email).sort();
+    if(JSON.stringify(currentMembers)!==JSON.stringify(editedUsers)){
+      const editedUsersSet = new Set(editedUsers);
+      this.teamService.removeUsersFromTeam(currentMembers.filter(a => !editedUsersSet.has(a)), this.data.team.team_id)
+        .then(result => {
+          this.editingMembers = !result;
+          this.refreshUsers();
+        });
+    }else{
+      this.editingMembers = false;
+    }
+
   }
 }

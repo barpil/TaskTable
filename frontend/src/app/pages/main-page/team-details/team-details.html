@@ -9,12 +9,29 @@
 
   <div class="details-section">
     <h4 class="details-label">Owner:</h4>
-    <p>{{ ownerUsername | async }}</p>
+    <p>{{ ownerUsername }}</p>
   </div>
 
   <div class="details-section">
-    <h4 class="details-label">Members ({{ assignedUsers.length }}):</h4>
-    <p class="members-list">{{ assignedUsersUsernames }}</p>
+
+    <div>
+      @if(editingMembers){
+        <div>
+          <user-ddselect [formControlRef]="editUsersTaskForm.get('members')!" [label]="'No members left'"
+                         [userTable]="assignedUsersInForm"></user-ddselect>
+          <button (click)="onEditUsersSubmit()">Save</button>
+        </div>
+
+      }@else{
+        <h4 class="details-label">Members ({{ assignedUsers.length }}):</h4>
+        <p class="members-list">{{ assignedUsersUsernames }}</p>
+      }
+
+      @if((isTeamOwner() | async) && !editingMembers && assignedUsers.length>0){
+        <button (click)="turnOnEditingMembers()">Manage members</button>
+      }
+    </div>
+
   </div>
 
   <div class="dialog-actions">

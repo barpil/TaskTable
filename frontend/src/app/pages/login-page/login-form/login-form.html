@@ -28,5 +28,6 @@
   @if(errorMessage){
     <p class="error">{{ errorMessage }}</p>
   }
-  <a routerLink="/register">Register</a>
+
+  <a routerLink="/register" [queryParams]="{ redirectTo: returnUrl }">Register</a>
 </div>
