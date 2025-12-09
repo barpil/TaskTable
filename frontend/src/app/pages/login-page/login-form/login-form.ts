@@ -48,7 +48,6 @@ export class LoginForm implements OnInit{
       error: (error) => {
         this.errorMessage = 'Niepoprawny email lub hasło';
         this.isLoading = false;
-        globalThis.alert('Błąd logowania: '+ (error.body?.toString() ?? 'empty body')+' status: '+error.status)
       }
     });
   }

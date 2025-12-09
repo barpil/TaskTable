@@ -10,6 +10,9 @@
   }
 </div>
 <div style="display: flex;flex-direction: column">
-  <button class="create-project-btn" (click)="openCreateProjectModal()">Create Project</button>
+  @if(isOwner){
+    <button class="create-project-btn" (click)="openCreateProjectModal()">Create Project</button>
+  }
+
   <project-list #projectList [teamId]="teamId"></project-list>
 </div>

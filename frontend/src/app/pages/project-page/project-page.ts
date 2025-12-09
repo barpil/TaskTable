@@ -9,6 +9,7 @@ import {CreateProjectDialog} from './create-project-dialog/create-project-dialog
 import {TeamService} from '../../services/team-service';
 import {Team} from '../../services/data/team';
 import {find, map} from 'rxjs';
+import {UserService} from '../../services/user-service';
 
 @Component({
   selector: 'app-project-page',
@@ -24,10 +25,12 @@ import {find, map} from 'rxjs';
 export class ProjectPage implements OnInit{
   teamId!: number;
   team: Team | null = null;
+  isOwner: boolean = false;
   dialog = inject(Dialog)
   @ViewChild('projectList')
   readonly projectListRef!: ProjectList;
   private readonly teamService = inject(TeamService);
+  private readonly userService = inject(UserService);
   constructor(private readonly route: ActivatedRoute) {
   }
 
@@ -37,6 +40,7 @@ export class ProjectPage implements OnInit{
       if(id) this.teamId = +id;
       this.teamService.getTeams().pipe(map(teams => teams.find(team => team.team.team_id === this.teamId))).subscribe(result =>{
         this.team = result?.team ?? null;
+        this.userService.getLoggedUserInfo(false).subscribe(userInfo => {this.isOwner = userInfo.email === this.team?.owner})
       });
     })
   }

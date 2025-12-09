@@ -3,6 +3,3 @@ spring:
     url: jdbc:postgresql://localhost:5433/tasktablemtab
     username: user
     password: password
-
-logging.level:
-  root: DEBUG

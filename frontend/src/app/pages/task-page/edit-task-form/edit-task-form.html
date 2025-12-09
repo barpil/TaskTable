@@ -2,7 +2,7 @@
 
   <button class="close-btn" (click)="closeModal()">X</button>
 
-  <h2>Edytuj task</h2>
+  <h2>Edit task</h2>
 
   <form [formGroup]="updateTaskForm" (ngSubmit)="onSubmit()">
 
@@ -13,7 +13,7 @@
         <input id="task-name" formControlName="name"/>
         @if(updateTaskForm.get('name')?.invalid && updateTaskForm.get('name')?.touched){
           <div class="error">
-            Nazwa nie może być pusta!
+            Name cannot be empty!
           </div>
         }
       </div>
@@ -23,16 +23,16 @@
         <textarea id="task-description"  formControlName="description"></textarea>
       </div>
 
-      <user-ddselect [formControlRef]="updateTaskForm.get('assignedUsers')!" [label]="'Przypisani użytkownicy'"
-      [userTable]="usersInProject"></user-ddselect>
+      <user-ddselect [formControlRef]="updateTaskForm.get('assignedUsers')!" [label]="'Assigned users'"
+      [userTable]="filteredUsers"></user-ddselect>
 
 
     </div>
 
     <div class="dialog-actions">
       <button class="delete-task-btn" (click)="deleteTask()">Delete task</button>
-      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
-      <button type="submit">Zapisz task</button>
+      <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+      <button type="submit">Save</button>
     </div>
   </form>
 
