@@ -28,7 +28,7 @@ export class ConfirmationDialog {
   }
 
   onCancel(){
-    this.dialogRef.close(true);
+    this.dialogRef.close(false);
   }
 }
 

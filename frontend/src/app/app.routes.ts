@@ -10,6 +10,7 @@ import {TaskPage} from './pages/task-page/task-page';
 import {canActivateTeam} from './guards/canActivateTeam';
 import {AuthGuard} from './guards/auth-guard';
 import {canActivateProject} from './guards/canActivateProject';
+import {InvitePage} from './pages/invite-page/invite-page';
 
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {path: 'error', component: ErrorPage},
   {path: 'login', component: LoginPage},
   {path: 'register', component: RegisterPage},
+  {path: 'invite/:invitationCode', component: InvitePage, canActivate: [AuthGuard]},
   {path: 'main-page', component: MainPage, canActivate: [AuthGuard],
     resolve: {
       userInfo: UserResolver

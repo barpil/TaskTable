@@ -1,6 +1,6 @@
 <div class="task-filter-container">
   <button class="close-btn" (click)="closeModal()">X</button>
-  <h2>Filtruj taski</h2>
+  <h2>Filter</h2>
 
   <form [formGroup]="filterTaskForm" (ngSubmit)="onSubmit()">
 
@@ -14,21 +14,21 @@
           }
 
           @if(states.length === 0){
-            <mat-option [disabled]="true">Brak stateów</mat-option>
+            <mat-option [disabled]="true">No states available</mat-option>
           }
 
         </mat-select>
       </mat-form-field>
 
     <mat-form-field class="assignationsDD">
-      <mat-label>Przypisani użytkownicy</mat-label>
+      <mat-label>Assigned users</mat-label>
       <mat-select formControlName="assignedUsers" multiple [compareWith]="compareUsers">
 
         <div class="filter-container" (click)="$event.stopPropagation()">
           <input
             #searchUserInput
             (input)="filterUsers(searchUserInput.value)"
-            placeholder="Wyszukaj..."
+            placeholder="Search..."
             class="search-input">
         </div>
 
@@ -39,15 +39,15 @@
         }
 
         @if(usersInProject.length === 0){
-          <mat-option [disabled]="true">Brak userów</mat-option>
+          <mat-option [disabled]="true">No users available</mat-option>
         }
 
       </mat-select>
     </mat-form-field>
 
     <div class="dialog-actions">
-      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
-      <button type="submit">Filtruj</button>
+      <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+      <button type="submit">Filter</button>
     </div>
   </form>
 </div>

@@ -13,7 +13,7 @@ FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 #Skopiowanie wyniku buildera
 COPY --from=builder /app/target/*.jar app.jar
-
+ENV SPRING_PROFILES_ACTIVE=prod
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

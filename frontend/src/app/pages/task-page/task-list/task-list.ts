@@ -91,6 +91,10 @@ export class TaskList implements OnInit{
         this.selectedStates = result.selectedStates;
         this.selectedUsers = result.selectedUsers;
         const filteredEmails = result.selectedUsers.map(user => user.email);
+        if(this.selectedUsers.length == 0 && this.selectedStates.length ==0){
+          this.groupTasks(this.tasks?.tasks ?? []);
+          return;
+        }
         const filteredTasks: Task[] = this.tasks?.tasks.filter(task => {
           if(this.selectedStates.length == 0){
             return task.assigned_users.some(user => filteredEmails.includes(user.email));

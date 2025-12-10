@@ -18,7 +18,7 @@ public class JwtTokenService {
         this.encoder = jwtEncoder;
         this.decoder = jwtDecoder;
     }
-    //Do zrobienia mam zeby dla kazdego usera generowalo inny token i zeby dzialalo
+
     public String generateToken(String email){
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()

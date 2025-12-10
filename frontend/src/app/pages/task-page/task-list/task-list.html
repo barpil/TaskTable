@@ -1,77 +1,73 @@
 @if (tasks) {
-  @if(tasks.tasks.length != 0) {
-    <div style="display: flex">
-      <button class="filter-btn" (click)="openFilterModal()" style="margin-left: auto;margin-right: 10px">Filtruj</button>
+  <div style="display: flex">
+    <button class="filter-btn" (click)="openFilterModal()" style="margin-left: auto;margin-right: 10px">Filter</button>
+  </div>
+  <div class="kanban-board">
+
+    <div class="kanban-column">
+      <h3>To Do</h3>
+      <div
+        cdkDropList
+        [cdkDropListData]="todoTasks"
+        (cdkDropListDropped)="drop($event)"
+        id="todo"
+        class="task-list-container"
+        [cdkDropListConnectedTo]="['in-progress', 'done']">
+
+        @for(task of todoTasks; track task.id){
+          <div cdkDrag class="task-drag-item">
+            <task-tile [taskObject]="task"></task-tile>
+          </div>
+        }
+        @if (todoTasks.length === 0) {
+          <p class="empty-list">Brak zadań "To Do"</p>
+        }
+      </div>
     </div>
-    <div class="kanban-board">
 
-      <div class="kanban-column">
-        <h3>To Do</h3>
-        <div
-          cdkDropList
-          [cdkDropListData]="todoTasks"
-          (cdkDropListDropped)="drop($event)"
-          id="todo"
-          class="task-list-container"
-          [cdkDropListConnectedTo]="['in-progress', 'done']">
+    <div class="kanban-column">
+      <h3>In Progress</h3>
+      <div
+        cdkDropList
+        [cdkDropListData]="inProgressTasks"
+        (cdkDropListDropped)="drop($event)"
+        id="in-progress"
+        class="task-list-container"
+        [cdkDropListConnectedTo]="['todo', 'done']">
 
-          @for(task of todoTasks; track task.id){
-            <div cdkDrag class="task-drag-item">
-              <task-tile [taskObject]="task"></task-tile>
-            </div>
-          }
-          @if (todoTasks.length === 0) {
-            <p class="empty-list">Brak zadań "To Do"</p>
-          }
-        </div>
+        @for(task of inProgressTasks; track task.id){
+          <div cdkDrag class="task-drag-item">
+            <task-tile [taskObject]="task"></task-tile>
+          </div>
+        }
+        @if (inProgressTasks.length === 0) {
+          <p class="empty-list">Brak zadań "In Progress"</p>
+        }
       </div>
-
-      <div class="kanban-column">
-        <h3>In Progress</h3>
-        <div
-          cdkDropList
-          [cdkDropListData]="inProgressTasks"
-          (cdkDropListDropped)="drop($event)"
-          id="in-progress"
-          class="task-list-container"
-          [cdkDropListConnectedTo]="['todo', 'done']">
-
-          @for(task of inProgressTasks; track task.id){
-            <div cdkDrag class="task-drag-item">
-              <task-tile [taskObject]="task"></task-tile>
-            </div>
-          }
-          @if (inProgressTasks.length === 0) {
-            <p class="empty-list">Brak zadań "In Progress"</p>
-          }
-        </div>
-      </div>
-
-      <div class="kanban-column">
-        <h3>Done</h3>
-        <div
-          cdkDropList
-          [cdkDropListData]="doneTasks"
-          (cdkDropListDropped)="drop($event)"
-          id="done"
-          class="task-list-container"
-          [cdkDropListConnectedTo]="['todo', 'in-progress']">
-
-          @for(task of doneTasks; track task.id){
-            <div cdkDrag class="task-drag-item">
-              <task-tile [taskObject]="task"></task-tile>
-            </div>
-          }
-          @if (doneTasks.length === 0) {
-            <p class="empty-list">Brak zadań "Done"</p>
-          }
-        </div>
-      </div>
-
     </div>
-  } @else {
-    <p>Task list is empty</p>
-  }
+
+    <div class="kanban-column">
+      <h3>Done</h3>
+      <div
+        cdkDropList
+        [cdkDropListData]="doneTasks"
+        (cdkDropListDropped)="drop($event)"
+        id="done"
+        class="task-list-container"
+        [cdkDropListConnectedTo]="['todo', 'in-progress']">
+
+        @for(task of doneTasks; track task.id){
+          <div cdkDrag class="task-drag-item">
+            <task-tile [taskObject]="task"></task-tile>
+          </div>
+        }
+        @if (doneTasks.length === 0) {
+          <p class="empty-list">Brak zadań "Done"</p>
+        }
+      </div>
+    </div>
+
+  </div>
 } @else {
   <loading-animation/>
 }

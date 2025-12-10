@@ -131,6 +131,24 @@
   flex-shrink: 0;
 }
 
+.delete-task-btn{
+  margin-right: auto;
+  width: auto;
+  padding: 10px 25px;
+  font-size: 16px;
+  background-color: #FA6543;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.delete-task-btn:hover{
+  background-color: #FA3205;
+}
+
 button[type="submit"] {
   width: auto;
   padding: 10px 25px;

@@ -61,6 +61,16 @@ export class TeamService {
     }
   }
 
+  async removeUsersFromTeam(userEmails: string[], teamId: number){
+    try{
+      const request: RemoveUserFromTeamRequest = {user_emails: userEmails};
+      const response = await firstValueFrom(this.http.delete(environment.apiUrl+'/teams/'+teamId+'/members', {body: request, withCredentials: true, observe: "response"}));
+      return response.ok;
+    }catch(error){
+      return false;
+    }
+  }
+
 }
 interface CreateTeamRequest{
   team_name: string;
@@ -69,5 +79,9 @@ interface CreateTeamRequest{
 
 interface GetUsersInTeamResponse{
   users: UserNameEmail[];
+}
+
+interface RemoveUserFromTeamRequest{
+  user_emails: string[];
 }
 

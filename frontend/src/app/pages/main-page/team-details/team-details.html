@@ -1,0 +1,42 @@
+<div class="team-details-dialog">
+  <button class="close-btn" (click)="close()">✖</button>
+  <h2 class="team-title-detail">{{ data.team.name }}</h2>
+
+  <div class="details-section">
+    <h4 class="details-label">Description:</h4>
+    <p class="description-text">{{ data.team.description || 'Brak opisu.' }}</p>
+  </div>
+
+  <div class="details-section">
+    <h4 class="details-label">Owner:</h4>
+    <p>{{ ownerUsername }}</p>
+  </div>
+
+  <div class="details-section">
+
+    <div>
+      @if(editingMembers){
+        <div>
+          <user-ddselect [formControlRef]="editUsersTaskForm.get('members')!" [label]="'Select members to keep'"
+                         [userTable]="assignedUsersInForm"></user-ddselect>
+          <button class="small-btn" (click)="onEditUsersSubmit()">Save</button>
+        </div>
+
+      }@else{
+        <h4 class="details-label">Members ({{ assignedUsers.length }}):</h4>
+        <p class="members-list">{{ assignedUsersUsernames }}</p>
+      }
+
+      @if((isTeamOwner() | async) && !editingMembers && assignedUsers.length>0){
+        <button class="small-btn" (click)="turnOnEditingMembers()">Manage members</button>
+      }
+    </div>
+
+  </div>
+
+  <div class="dialog-actions">
+    @if(isTeamOwner() | async){
+      <button class="invite-btn" (click)="openTeamInvitationModal()">Invite users</button>
+    }
+  </div>
+</div>

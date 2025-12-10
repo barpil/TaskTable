@@ -105,6 +105,17 @@ export class EditTaskForm implements OnInit{
     this.dialogRef?.close();
   }
 
+  deleteTask(){
+    this.taskService.deleteTask(this.task.id).then(result =>{
+      if(result){
+        this.taskService.loadTasks(this.projectId);
+        this.dialogRef?.close();
+      }
+      }
+    );
+
+  }
+
 
 }
 

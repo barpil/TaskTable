@@ -1,0 +1,62 @@
+.sort-dialog-container {
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.sort-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #fff;
+  width: 100%; /* Rozciągnij na całą szerokość dialogu */
+  cursor: pointer;
+}
+
+.sort-select:focus {
+  outline: 2px solid #1976d2; /* Kolor akcentu przy focusie */
+  border-color: transparent;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Opcjonalne style dla przycisków, żeby wyglądały ładniej */
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-cancel {
+  background: transparent;
+  color: #666;
+}
+
+.btn-confirm {
+  background: #1976d2;
+  color: white;
+}

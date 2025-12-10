@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -51,19 +53,21 @@ public class TeamsService {
         teamsRepository.save(createdTeam);
     }
 
-    public void removeUserFromTeam(String removedUsersEmail, Long teamId){
+    public void removeUsersFromTeam(String[] removedUsersEmails, Long teamId){
         Teams team = teamsRepository.findById(teamId).orElseThrow(() -> new RuntimeException("PODANY TEAM NIE ISTNIEJE"));
-        Users removedUser = getUserByEmail(removedUsersEmail);
-        if(team.getMembers().size()<=1){
+        Arrays.stream(removedUsersEmails).forEach(email -> {
+            Users removedUser = getUserByEmail(email);
+            teamMembersRepository.getTeamMembersByUserAndTeam(removedUser, team)
+                    .ifPresentOrElse(
+                            teamMembersRepository::delete,
+                            () -> logger.error("User ({}:{}) is not a part of specified team ({}:{}).",
+                                    removedUser.getName(), email, team.getId(), team.getName())
+                    );
+        });
+
+        if(teamsRepository.count()<=0){
             teamsRepository.delete(team);
-            return;
         }
-        teamMembersRepository.getTeamMembersByUserAndTeam(removedUser, team)
-                        .ifPresentOrElse(
-                                teamMembersRepository::delete,
-                                () -> logger.error("User ({}:{}) is not a part of specified team ({}:{}).",
-                                            removedUser.getName(), removedUsersEmail, team.getId(), team.getName())
-                        );
     }
 
     public void addUserToTeam(String addedUsersEmail, Long teamId){
@@ -90,7 +94,9 @@ public class TeamsService {
         return false;
     }
 
-
+    public Optional<Teams> getTeam(Long teamId){
+        return teamsRepository.findById(teamId);
+    }
 
 
 

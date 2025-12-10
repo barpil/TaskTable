@@ -61,13 +61,14 @@ export class TeamList implements OnInit{
   openSortDialog() {
     const dialogRef = this.dialog.open<SortCriteria>(TeamSortDialog, {
       minWidth: '300px',
-      data: { currentSort: this.currentSort } // Przekazujemy obecny stan
+      data: { currentSort: this.currentSort }
     });
 
     dialogRef.closed.subscribe(result => {
       if (result) {
         this.currentSort = result;
         this.sortTeams(result);
+        this.refreshTeams();
       }
     });
   }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
@@ -12,9 +12,11 @@ import {environment} from '../../../../environments/environment';
   templateUrl: './register-form.html',
   styleUrl: './register-form.css'
 })
-export class RegisterForm {
+export class RegisterForm implements OnInit{
   registerForm;
   passwordsDidNotMatch = false;
+  returnUrl: string | null = null;
+  route = inject(ActivatedRoute)
   constructor(private readonly router: Router, private readonly fb: FormBuilder, private readonly http: HttpClient) {
     this.registerForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -24,10 +26,8 @@ export class RegisterForm {
     });
   }
 
-  isFieldInvalid(fieldName: string){
-    return this.registerForm.get(fieldName)?.invalid &&
-      this.registerForm.get(fieldName)?.dirty &&
-      this.registerForm.get(fieldName)?.touched
+  ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['redirectTo'] || null;
   }
 
 
@@ -43,7 +43,12 @@ export class RegisterForm {
 
     this.http.post(environment.apiUrl+'/auth/register', this.registerForm.value, {withCredentials: true}).subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        if(this.returnUrl === null){
+          this.router.navigate(['/login']);
+        }else{
+          this.router.navigate(['/login'], {queryParams: {redirectTo: this.returnUrl}});
+        }
+
       },
       error: (error) => {
         globalThis.alert('Failed to register user. Error: '+ (error.body?.toString() ?? 'empty body')+' status: '+error.status);

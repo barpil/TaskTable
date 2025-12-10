@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {environment} from '../../../../environments/environment';
 
 @Component({
@@ -13,11 +13,13 @@ import {environment} from '../../../../environments/environment';
   templateUrl: './login-form.html',
   styleUrl: './login-form.css'
 })
-export class LoginForm {
+export class LoginForm implements OnInit{
   private readonly router: Router;
   loginForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  returnUrl: string = '/main-page';
+  private readonly route = inject(ActivatedRoute);
 
   constructor(private fb: FormBuilder, private http: HttpClient, router: Router) {
     this.loginForm = this.fb.group({
@@ -25,6 +27,10 @@ export class LoginForm {
       password: ['', Validators.required]
     });
     this.router=router;
+  }
+
+  ngOnInit(){
+    this.returnUrl = this.route.snapshot.queryParams['redirectTo'] || '/main-page';
   }
 
   onSubmit() {
@@ -37,12 +43,11 @@ export class LoginForm {
     this.http.post(environment.apiUrl+'/auth/login', this.loginForm.value, {withCredentials: true}).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/main-page'])
+        this.router.navigateByUrl(this.returnUrl);
       },
       error: (error) => {
         this.errorMessage = 'Niepoprawny email lub hasło';
         this.isLoading = false;
-        globalThis.alert('Błąd logowania: '+ (error.body?.toString() ?? 'empty body')+' status: '+error.status)
       }
     });
   }

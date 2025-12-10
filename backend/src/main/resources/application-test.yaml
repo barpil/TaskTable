@@ -1,9 +1,0 @@
-spring:
-  application.name: TaskTableApp
-  jpa:
-    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    #Baza nie jest modyfikowana i przystosowywana do kodu
-    hibernate.ddl-auto: none
-
-logging.level:
-  root: DEBUG

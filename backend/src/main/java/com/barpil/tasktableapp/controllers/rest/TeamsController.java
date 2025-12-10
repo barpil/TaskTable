@@ -1,9 +1,6 @@
 package com.barpil.tasktableapp.controllers.rest;
 
-import com.barpil.tasktableapp.controllers.rest.dto.AddUserToTeamRequest;
-import com.barpil.tasktableapp.controllers.rest.dto.CreateTeamRequest;
-import com.barpil.tasktableapp.controllers.rest.dto.GetTeamsResponse;
-import com.barpil.tasktableapp.controllers.rest.dto.GetUsersInTeamResponse;
+import com.barpil.tasktableapp.controllers.rest.dto.*;
 import com.barpil.tasktableapp.repositories.entities.Teams;
 import com.barpil.tasktableapp.repositories.entities.Users;
 import com.barpil.tasktableapp.security.services.JwtTokenService;
@@ -66,9 +63,13 @@ public class TeamsController {
 
     @DeleteMapping("/{teamId}/members")
     public ResponseEntity<?> removeUserFromTeam(@PathVariable("teamId") Long teamId,
-                                           @RequestBody AddUserToTeamRequest request){
-        teamsService.removeUserFromTeam(request.getAddedUsersEmail(), teamId);
+                                           @RequestBody RemoveUsersFromTeamRequest request){
+        if(request.getRemovedUsersEmails() == null || request.getRemovedUsersEmails().length == 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        teamsService.removeUsersFromTeam(request.getRemovedUsersEmails(), teamId);
         return ResponseEntity.ok().build();
     }
+
 
 }

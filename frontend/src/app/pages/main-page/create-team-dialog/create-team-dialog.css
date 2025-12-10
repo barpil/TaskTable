@@ -87,3 +87,53 @@
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
   background-color: white;
 }
+
+.dialog-actions {
+  display: flex;
+  text-align: right;
+  margin-top: 10px;
+  flex-shrink: 0;
+  padding-top: 15px;
+  border-top: 1px solid #ebecf0;
+  gap: 5px;
+}
+
+
+button[type="submit"] {
+  width: auto;
+  padding: 10px 25px;
+  font-size: 16px;
+  background-color: #00875a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button[type="submit"]:hover {
+  background-color: #006b49;
+}
+
+.cancel-btn {
+  background-color: #ebecf0;
+  color: #42526e;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.cancel-btn:hover {
+  background-color: #c9d2d8;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 13px;
+  margin-top: 5px;
+}

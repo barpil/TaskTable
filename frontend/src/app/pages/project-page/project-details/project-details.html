@@ -1,0 +1,14 @@
+<div class="project-details-dialog">
+  <button class="close-btn" (click)="close()">✖</button>
+  <h2 class="project-title-detail">{{ data.project.name }}</h2>
+
+  <div class="details-section">
+    <h4 class="details-label">Description:</h4>
+    <p class="description-text">{{ data.project.description || 'Brak opisu.' }}</p>
+  </div>
+
+  <div class="details-section">
+    <h4 class="details-label">Owner:</h4>
+    <p>{{ ownerUsername }}</p>
+  </div>
+</div>

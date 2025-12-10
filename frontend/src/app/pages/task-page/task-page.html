@@ -3,7 +3,9 @@
   <logout-btn style="margin-left: auto;margin-right: 10px"></logout-btn>
 </button-panel>
 
-
+<div style="; width: 100%;display: flex;justify-content: center">
+  <h1>{{ projectName }}</h1>
+</div>
 <div style="padding: 20px">
   <button class="add-task-btn" (click)="openModal()">Add task</button>
   <task-list [projectId]="projectId"></task-list>

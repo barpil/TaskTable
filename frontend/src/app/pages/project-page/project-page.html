@@ -2,7 +2,17 @@
   <return-btn [returnPath]="'/main-page'"></return-btn>
   <logout-btn style="margin-left: auto;margin-right: 10px"></logout-btn>
 </button-panel>
+<div style="; width: 100%;display: flex;justify-content: center">
+  @if (team) {
+    <h1>{{ team.name }}</h1>
+  } @else {
+    <p>Loading team data...</p>
+  }
+</div>
+<div style="display: flex;flex-direction: column">
+  @if(isOwner){
+    <button class="create-project-btn" (click)="openCreateProjectModal()">Create Project</button>
+  }
 
-<div>
-  <project-list [teamId]="teamId"></project-list>
+  <project-list #projectList [teamId]="teamId"></project-list>
 </div>

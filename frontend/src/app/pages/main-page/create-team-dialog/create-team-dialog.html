@@ -5,11 +5,7 @@
     <div class="form-group">
       <label for="name">Team name</label>
       <input id="team-name" formControlName="name"/>
-      @if(createTeamForm.get('name')?.invalid && createTeamForm.get('name')?.touched){
-        <div class="error">
-          Nazwa nie może być pusta!
-        </div>
-      }
+      <span class="error">{{createTeamForm.get('name')?.invalid && createTeamForm.get('name')?.touched ? "Team name is required!" : "\u00A0"}}</span>
     </div>
 
     <div class="form-group">
@@ -18,8 +14,8 @@
     </div>
 
     <div class="dialog-actions">
-      <button type="button" class="cancel-btn" (click)="closeModal()">Anuluj</button>
-      <button type="submit">Utwórz zespół</button>
+      <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+      <button type="submit">Create</button>
     </div>
   </form>
 
